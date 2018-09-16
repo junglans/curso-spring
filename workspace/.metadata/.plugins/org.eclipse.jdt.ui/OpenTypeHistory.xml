@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy/>
+<typeInfoHistroy>
+<typeInfo handle="=spring-boot-data-jpa/C:\/Java\/jdk1.8.0_181\/jre\/lib\/rt.jar&lt;java.io(Serializable.class[Serializable" modifiers="1537" timestamp="1534315257649"/>
+<typeInfo handle="=spring-boot-data-jpa/src\/main\/java&lt;com.curso.springboot.jpa.models.dao{IBasicDAO.java[IBasicDAO" modifiers="513" timestamp="1537118410786"/>
+<typeInfo handle="=spring-boot-data-jpa/src\/main\/java&lt;com.curso.springboot.jpa.models.dao{BasicDAOImpl.java[BasicDAOImpl" modifiers="1025" timestamp="1537119865362"/>
+</typeInfoHistroy>
