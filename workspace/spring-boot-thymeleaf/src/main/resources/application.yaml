@@ -1,0 +1,4 @@
+application:
+  controllers:
+    index:
+      message: ¡Hola Mundo Spring Boot !
