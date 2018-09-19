@@ -3,7 +3,6 @@ package com.curso.springboot.jpa.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +13,13 @@ import com.curso.springboot.jpa.models.entity.ClientEntity;
 import com.curso.springboot.jpa.utils.MapperUtil;
 
 @Service
-public class ClientService {
+public class ClientService extends BasicService {
 
 	 @Autowired
-	 private MapperUtil mapper;
+	 protected MapperUtil mapper;
 	 
 	 @Autowired
-	 @Qualifier("clientDao")
-	 private IBasicDAO<ClientEntity> clientDao;
+	 protected IBasicDAO<ClientEntity> clientDao;
 	 
 	 @Transactional(propagation = Propagation.REQUIRED)
 	 public List<ClientDTO> findAll() {
@@ -31,4 +29,6 @@ public class ClientService {
 	 public ClientDTO save(ClientDTO dto) {
 		return mapper.map(clientDao.save(mapper.map(dto, ClientEntity.class)),ClientDTO.class);
 	 }
+	 
+	
 }
