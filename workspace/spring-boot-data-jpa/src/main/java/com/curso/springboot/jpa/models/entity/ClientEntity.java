@@ -29,23 +29,28 @@ public class ClientEntity implements Serializable {
 	
 	@Column(insertable=true, updatable=true, nullable=false)
 	private String name;
+	
 	@Column(insertable=true, updatable=true, nullable=false)
 	private String surname;
+	
 	@Column(insertable=true, updatable=true, nullable=false)
 	private String email;
 	
-	@Column(name="creation_date", insertable=true, updatable=false, nullable=false)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="creation_date", insertable=true, updatable=true, nullable=false)
+	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	
+	@Column(name="activation_date", insertable=true, updatable=true, nullable=true)
+	@Temporal(TemporalType.DATE)
+	private Date activationDate;
+	
+	@PrePersist
+	public void prePersist() {
+		this.creationDate = new Date();
+	}
 	
 	public ClientEntity() {
 		super();
-	}
-	
-	@PrePersist
-	public void prePetsist() {
-		this.creationDate = new Date();
 	}
 	
 	public Long getId() {
@@ -78,10 +83,20 @@ public class ClientEntity implements Serializable {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
+	
+	public Date getActivationDate() {
+		return activationDate;
+	}
+
+	public void setActivationDate(Date activationDate) {
+		this.activationDate = activationDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((activationDate == null) ? 0 : activationDate.hashCode());
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -89,6 +104,7 @@ public class ClientEntity implements Serializable {
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -98,6 +114,11 @@ public class ClientEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ClientEntity other = (ClientEntity) obj;
+		if (activationDate == null) {
+			if (other.activationDate != null)
+				return false;
+		} else if (!activationDate.equals(other.activationDate))
+			return false;
 		if (creationDate == null) {
 			if (other.creationDate != null)
 				return false;
@@ -125,7 +146,5 @@ public class ClientEntity implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

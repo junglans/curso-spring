@@ -3,17 +3,34 @@ package com.curso.springboot.jpa.models.bean;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ClientBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6709293821176421604L;
+	
 	private Long id;
+	
+	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String surname;
+	@NotEmpty @Email
 	private String email;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date creationDate;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@NotNull
+	private Date activationDate;
 
 	public ClientBean() {
 		super();
@@ -59,10 +76,19 @@ public class ClientBean implements Serializable {
 		this.creationDate = creationDate;
 	}
 
+	public Date getActivationDate() {
+		return activationDate;
+	}
+
+	public void setActivationDate(Date activationDate) {
+		this.activationDate = activationDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((activationDate == null) ? 0 : activationDate.hashCode());
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -80,6 +106,11 @@ public class ClientBean implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ClientBean other = (ClientBean) obj;
+		if (activationDate == null) {
+			if (other.activationDate != null)
+				return false;
+		} else if (!activationDate.equals(other.activationDate))
+			return false;
 		if (creationDate == null) {
 			if (other.creationDate != null)
 				return false;
@@ -107,5 +138,5 @@ public class ClientBean implements Serializable {
 			return false;
 		return true;
 	}
-
+	
 }
