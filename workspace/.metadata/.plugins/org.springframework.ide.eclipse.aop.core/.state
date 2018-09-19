@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aop-reference-model>
+<aop-project name="spring-boot-web-jsp"/>
+<aop-project name="spring-boot-thymeleaf"/>
 <aop-project name="spring-boot-data-jpa"/>
 </aop-reference-model>

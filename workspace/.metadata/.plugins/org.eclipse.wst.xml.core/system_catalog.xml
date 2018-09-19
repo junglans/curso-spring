@@ -179,4 +179,6 @@
   <public publicId="-//SPRING//DTD BEAN 2.0//EN" uri="jar:file:/C:/Desarrollo/Herramientas/sts-bundle/sts-3.9.4.RELEASE/plugins/org.springframework.beans_4.3.15.20180306-CI.jar!/org/springframework/beans/factory/xml/spring-beans-2.0.dtd" webURL="http://www.springframework.org/dtd/spring-beans-2.0.dtd"/>
   <public publicId="-//LOG4J//DTD LOG4J//EN" uri="jar:file:/C:/Desarrollo/Herramientas/sts-bundle/sts-3.9.4.RELEASE/plugins/org.springsource.ide.eclipse.commons.ui_3.9.4.201804120754-RELEASE.jar!/dtd/log4j-1.2.dtd" webURL="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd"/>
   <public publicId="-//APACHE//DTD LOG4J 1.2//EN" uri="jar:file:/C:/Desarrollo/Herramientas/sts-bundle/sts-3.9.4.RELEASE/plugins/org.springsource.ide.eclipse.commons.ui_3.9.4.201804120754-RELEASE.jar!/dtd/log4j-1.2.dtd" webURL="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd"/>
+  <public publicId="-//DOZER//DTD MAPPINGS//EN" uri="jar:file:/C:/Desarrollo/Herramientas/sts-bundle/sts-3.9.4.RELEASE/plugins/org.dozer.eclipse.plugin_0.8.1.jar!/schema/dozerbeanmapping.dtd"/>
+  <public publicId="http://dozer.sourceforge.net" uri="jar:file:/C:/Desarrollo/Herramientas/sts-bundle/sts-3.9.4.RELEASE/plugins/org.dozer.eclipse.plugin_0.8.1.jar!/schema/beanmapping.xsd"/>
 </catalog>

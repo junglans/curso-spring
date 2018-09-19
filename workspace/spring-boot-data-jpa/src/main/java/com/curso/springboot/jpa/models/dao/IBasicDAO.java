@@ -5,4 +5,6 @@ import java.util.List;
 public interface IBasicDAO<T> {
 
 	List<T> findAll();
+	T save(T entity);
+	
 }
