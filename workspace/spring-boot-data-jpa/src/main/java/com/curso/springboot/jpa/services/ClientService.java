@@ -18,14 +18,17 @@ public class ClientService {
 
 	 @Autowired
 	 private MapperUtil mapper;
+	 
 	 @Autowired
 	 @Qualifier("clientDao")
 	 private IBasicDAO<ClientEntity> clientDao;
 	 
 	 @Transactional(propagation = Propagation.REQUIRED)
 	 public List<ClientDTO> findAll() {
-		 
 		 return mapper.map(clientDao.findAll(),  ClientDTO.class);
-		 
+	 }
+	 @Transactional(propagation = Propagation.REQUIRED)
+	 public ClientDTO save(ClientDTO dto) {
+		return mapper.map(clientDao.save(mapper.map(dto, ClientEntity.class)),ClientDTO.class);
 	 }
 }

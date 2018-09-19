@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}">Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+</head>
+<body>
+	<div class="container">
+		<h1 th:text="${title}"
+			class="text-secondary border border-success border-top-0 border-left-0 border-right-0"></h1>
+		<form th:action="@{/form}" th:object="${client}" method="POST">
+			<input type="hidden" th:field="${client.id}" />
+			<table>
+				<tr>
+					<td>Nombre</td>
+					<td><input type="text" th:field="*{name}" class="form-control" /></td>
+				</tr>
+				<tr>
+					<td>Apellido</td>
+					<td><input type="text" th:field="*{surname}"
+						class="form-control" /></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="email" th:field="*{email}"
+						class="form-control" /></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Crear cliente"
+						class="btn btn-primary" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
