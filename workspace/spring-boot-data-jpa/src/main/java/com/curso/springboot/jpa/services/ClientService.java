@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.curso.springboot.jpa.models.dao.IBasicDAO;
+//import com.curso.springboot.jpa.models.dao.IBasicDAO;
+import com.curso.springboot.jpa.models.dao.IClientDAO;
 import com.curso.springboot.jpa.models.dto.ClientDTO;
 import com.curso.springboot.jpa.models.entity.ClientEntity;
 import com.curso.springboot.jpa.utils.MapperUtil;
@@ -19,8 +20,9 @@ public class ClientService extends BasicService {
 	 protected MapperUtil mapper;
 	 
 	 @Autowired
-	 protected IBasicDAO<ClientEntity> clientDao;
-	 
+	 // Pasamos de la implementación basada en la implementación de DAO's a usar Spring DATA 
+	 // protected IBasicDAO<ClientEntity> clientDao;
+	 protected IClientDAO clientDao;
 	 @Transactional(propagation = Propagation.REQUIRED)
 	 public List<ClientDTO> findAll() {
 		 return mapper.map(clientDao.findAll(),  ClientDTO.class);
