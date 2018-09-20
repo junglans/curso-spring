@@ -3,7 +3,7 @@
 <head th:fragment="head">
 <meta charset="UTF-8" />
 <title th:text="'Spring Boot: MVC + Thymeleaf + Data JPA - ' + ${title}"></title>
-<link rel="stylesheet"  th:href="@{/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
 	<header th:fragment="header">
@@ -21,10 +21,18 @@
 				</ul>
 			</div>
 		</nav>
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
 	</header>
 	<div class="container"></div>
 	<footer th:fragment="footer" class="container">
-	<hr />
+		<hr />
 		<img th:src="@{/images/spring.png}" alt="Spring logo" />
 		<p>
 			Powered by <a href="https://projects.spring.io/spring-boot/">Spring
@@ -39,7 +47,7 @@
 		<!-- jQuery first, then Bootstrap JS -->
 		<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
-	
+
 	</footer>
 </body>
 </html>

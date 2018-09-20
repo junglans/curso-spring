@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.springboot.jpa.models.bean.ClientBean;
 import com.curso.springboot.jpa.models.dto.ClientDTO;
@@ -44,7 +45,7 @@ public class ClientController {
 	@RequestMapping(value="/form", method=RequestMethod.POST)
 	public String save(@ModelAttribute("client") @Valid ClientBean client, // el model atribute se toma de la sesión.
 						BindingResult bindingResult, 
-						Model model, SessionStatus status) {
+						Model model, SessionStatus status, RedirectAttributes flash) {
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("title", "Formulario de Cliente");
@@ -52,21 +53,22 @@ public class ClientController {
 		}
 		clientService.save( mapper.map(client, ClientDTO.class));
 		status.setComplete(); // Se elimina el objeto cliente de la sesión.
+		flash.addFlashAttribute("success", "Cliente creado con éxito.");
 		return "redirect:/clients";
 	}
 	
 	@RequestMapping(value="/remove/{id}", method=RequestMethod.GET)
-	public String delete(@PathVariable(value="id") Long id) {
+	public String delete(@PathVariable(value="id") Long id, RedirectAttributes flash) {
 		
 		if (id != null) {
 			clientService.delete(id);
 		}
-		
+		flash.addFlashAttribute("success", "Cliente eliminado con éxito.");
 		return "redirect:/clients";
 	}
 	
 	@RequestMapping(value="/form/{id}", method=RequestMethod.GET)
-	public String findById(@PathVariable(value="id")Long id, Model model) {
+	public String findById(@PathVariable(value="id")Long id, Model model, RedirectAttributes flash) {
 		ClientBean client = null;
 		if (id != null) {
 			
@@ -76,10 +78,12 @@ public class ClientController {
 				model.addAttribute("client",client);
 				return "form";
 			} else {
+				flash.addFlashAttribute("error", "No existe un cliente con el identificador:" + id);
 				return "redirect:/clients";
 			}
 			
 		} else {
+			flash.addFlashAttribute("error", "El identificador del cliente no puede ser nulo.");
 			return "redirect:/clients";
 		}
 		

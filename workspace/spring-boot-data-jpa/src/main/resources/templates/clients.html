@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="layout/layout :: head"><meta charset="UTF-8" /></head>
 <body>
 
 	<header th:replace="layout/layout :: header"></header>
@@ -21,8 +21,8 @@
 							<th>nombre</th>
 							<th>apellido</th>
 							<th>email</th>
-							<th>fecha activación</th>
-							<th>fecha creación</th>
+							<th>fecha activaciÃ³n</th>
+							<th>fecha creaciÃ³n</th>
 							<th>editar</th>
 							<th>eliminar</th>
 						</tr>
@@ -39,7 +39,7 @@
 								th:href="@{/form/} + ${client.id}" th:text="'editar'"></a></td>
 							<td><a class="btn btn-danger btn-xs"
 								th:href="@{/remove/} + ${client.id}" th:text="'eliminar'"
-								onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
+								onclick="return confirm('EstÃ¡s seguro que quieres eliminar?');"></a></td>
 						</tr>
 					</tbody>
 
