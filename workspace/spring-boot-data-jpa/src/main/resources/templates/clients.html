@@ -50,7 +50,7 @@
 					<td th:text="${client.activationDate}"></td>
 					<td th:text="${client.creationDate}"></td>
 					<td><a class="btn btn-primary btn-xs" th:href="@{/form/} + ${client.id}" th:text="'editar'"></a></td>
-					<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${client.id}" th:text="'eliminar'" onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
+					<td><a class="btn btn-danger btn-xs" th:href="@{/remove/} + ${client.id}" th:text="'eliminar'" onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
 				</tr>
 			</tbody>
 

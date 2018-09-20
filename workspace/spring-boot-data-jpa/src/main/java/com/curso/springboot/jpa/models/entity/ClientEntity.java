@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
  
 @Entity
 @Table(name="CLIENTS")
-public class ClientEntity implements Serializable {
+public class ClientEntity extends Identifiable<Long> implements Serializable {
 
 	/**
 	 * 
@@ -53,9 +53,11 @@ public class ClientEntity implements Serializable {
 		super();
 	}
 	
+	@Override
 	public Long getId() {
 		return id;
 	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}

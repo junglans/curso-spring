@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.curso.springboot.jpa.models.entity.Identifiable;
+
 @Repository
-public class BasicDAOImpl<T> implements IBasicDAO<T> {
+public class BasicDAOImpl<T extends Identifiable<?>> implements IBasicDAO<T> {
 
 	@PersistenceContext
 	protected EntityManager em;
@@ -18,9 +20,10 @@ public class BasicDAOImpl<T> implements IBasicDAO<T> {
 	/**
 	 * Almacena la clase del genérico T
 	 */
-	protected Class<?> typeOf;
+	protected Class<T> typeOf;
 
-	public BasicDAOImpl() {}
+	public BasicDAOImpl() {
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -33,13 +36,34 @@ public class BasicDAOImpl<T> implements IBasicDAO<T> {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public T save(T entity) {
-		em.persist(entity);
+		if (entity.getId() != null) {
+			em.merge(entity);
+		} else {
+			em.persist(entity);
+		}
 		return entity;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public T findOne(Long id) {
+		 return em.find(typeOf, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public void setTypeOf(Class<?> typeOf) {
-		this.typeOf = typeOf;
+		this.typeOf = (Class<T>)typeOf;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		T entity = findOne(id);
+		if (entity != null) {
+			em.remove(entity);
+		}
+		
 	}
 
 }

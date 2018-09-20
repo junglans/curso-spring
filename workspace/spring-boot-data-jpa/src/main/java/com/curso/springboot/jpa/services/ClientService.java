@@ -29,6 +29,12 @@ public class ClientService extends BasicService {
 	 public ClientDTO save(ClientDTO dto) {
 		return mapper.map(clientDao.save(mapper.map(dto, ClientEntity.class)),ClientDTO.class);
 	 }
-	 
-	
+	 @Transactional(propagation = Propagation.REQUIRED)
+	 public ClientDTO findById(Long id) {
+		 return mapper.map(clientDao.findOne(id), ClientDTO.class);
+	 }
+	 @Transactional(propagation = Propagation.REQUIRED)
+	 public void delete(Long id) {
+		 clientDao.delete(id);
+	 }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=spring-boot-data-jpa/src\/main\/java&lt;com.curso.springboot.jpa.models.entity{ClientEntity.java[ClientEntity" modifiers="1" timestamp="1537262884070"/>
+<typeInfo handle="=spring-boot-data-jpa/src\/main\/java&lt;com.curso.springboot.jpa.models.entity{ClientEntity.java[ClientEntity" modifiers="1" timestamp="1537352586308"/>
 <typeInfo handle="=spring-boot-data-jpa/src\/main\/java&lt;com.curso.springboot.jpa.models.dto{ClientDTO.java[ClientDTO" modifiers="1" timestamp="1537342110487"/>
+<typeInfo handle="=spring-boot-data-jpa/C:\/Users\/jf.jimenez\/.m2\/repository\/org\/springframework\/spring-beans\/4.3.19.RELEASE\/spring-beans-4.3.19.RELEASE.jar&lt;org.springframework.beans.factory.config(BeanPostProcessor.class[BeanPostProcessor" modifiers="1537" timestamp="1536586941250"/>
 </typeInfoHistroy>
