@@ -3,6 +3,8 @@ package com.curso.springboot.jpa.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,10 +32,13 @@ public class ClientController {
 	private MapperUtil mapper;
 	
 	@RequestMapping(value="/clients", method=RequestMethod.GET )
-	public String list(Model model) {
+	public String list(@RequestParam(name="page", defaultValue="0") int page, Model model) {
+		
+		Pageable pageRequest  = new PageRequest(page, 5);
 		model.addAttribute("title", "Listado de Clientes");
-		model.addAttribute("clientList", mapper.map(clientService.findAll(), ClientBean.class));
+		model.addAttribute("clientList", mapper.map(clientService.findAll(pageRequest), ClientBean.class));
 		return "clients";
+		
 	}
 	
 	@RequestMapping(value="/form", method=RequestMethod.GET)

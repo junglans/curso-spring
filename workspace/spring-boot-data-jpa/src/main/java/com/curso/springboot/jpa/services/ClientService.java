@@ -3,6 +3,9 @@ package com.curso.springboot.jpa.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +17,7 @@ import com.curso.springboot.jpa.models.entity.ClientEntity;
 import com.curso.springboot.jpa.utils.MapperUtil;
 
 @Service
-public class ClientService extends BasicService {
+public class ClientService implements IClientService {
 
 	 @Autowired
 	 protected MapperUtil mapper;
@@ -24,6 +27,7 @@ public class ClientService extends BasicService {
 	 // protected IBasicDAO<ClientEntity> clientDao;
 	 protected IClientDAO clientDao;
 	 @Transactional(propagation = Propagation.REQUIRED)
+	 
 	 public List<ClientDTO> findAll() {
 		 return mapper.map(clientDao.findAll(),  ClientDTO.class);
 	 }
@@ -39,4 +43,14 @@ public class ClientService extends BasicService {
 	 public void delete(Long id) {
 		 clientDao.delete(id);
 	 }
+	@Override
+	public Page<ClientDTO> findAll(Pageable pageable) {
+		 
+		Page<ClientEntity> pageEntity = clientDao.findAll(pageable);
+		List<ClientDTO> listDto = mapper.map(pageEntity, ClientDTO.class);
+		PageImpl<ClientDTO> pageDto = new PageImpl<ClientDTO>(listDto,pageable,pageEntity.getTotalElements());
+		return pageDto;
+		
+	}
+	
 }
