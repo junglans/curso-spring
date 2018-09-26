@@ -1,8 +1,12 @@
 package com.curso.springboot.jpa.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import com.curso.springboot.jpa.models.bean.ClientBean;
 import com.curso.springboot.jpa.models.dto.ClientDTO;
 import com.curso.springboot.jpa.services.ClientService;
 import com.curso.springboot.jpa.utils.MapperUtil;
+import com.curso.springboot.jpa.utils.paginator.PageRenderer;
 
 @Controller
 @SessionAttributes("client") // Se guarda el objeto cliente en la sesión.
@@ -31,12 +36,21 @@ public class ClientController {
 	@Autowired
 	private MapperUtil mapper;
 	
+	 
+	
 	@RequestMapping(value="/clients", method=RequestMethod.GET )
 	public String list(@RequestParam(name="page", defaultValue="0") int page, Model model) {
 		
 		Pageable pageRequest  = new PageRequest(page, 5);
+		Page<ClientDTO> dtoPage = clientService.findAll(pageRequest);
+		
+		List<ClientBean> beanList =	mapper.map(dtoPage.getContent(), ClientBean.class);
+		Page<ClientBean> beanPage = new PageImpl<ClientBean>(beanList, pageRequest, dtoPage.getTotalElements());
+		PageRenderer<ClientBean> pageRenderer = new PageRenderer<ClientBean>("/clients", beanPage);
 		model.addAttribute("title", "Listado de Clientes");
-		model.addAttribute("clientList", mapper.map(clientService.findAll(pageRequest), ClientBean.class));
+		model.addAttribute("clientList", beanPage);
+		model.addAttribute("page", pageRenderer);
+		
 		return "clients";
 		
 	}

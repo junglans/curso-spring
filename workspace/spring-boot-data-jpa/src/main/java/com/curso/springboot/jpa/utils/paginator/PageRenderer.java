@@ -72,11 +72,11 @@ public class PageRenderer<T> {
 		return page.isLast();
 	}
 	
-	public boolean hasNext() {
+	public boolean isHasNext() {
 		return page.hasNext();
 	}
 	
-	public boolean hasPrevious() {
+	public boolean isHasPrevious() {
 		return page.hasPrevious();
 	}
 }
