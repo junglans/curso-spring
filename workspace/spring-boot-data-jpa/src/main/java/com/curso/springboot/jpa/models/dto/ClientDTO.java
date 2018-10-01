@@ -15,6 +15,7 @@ public class ClientDTO implements Serializable {
 	private String email;
 	private Date creationDate;
 	private Date activationDate;
+	private String photo;
 	
 	public ClientDTO() {
 		super();
@@ -66,6 +67,14 @@ public class ClientDTO implements Serializable {
 
 	public void setActivationDate(Date activationDate) {
 		this.activationDate = activationDate;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	@Override

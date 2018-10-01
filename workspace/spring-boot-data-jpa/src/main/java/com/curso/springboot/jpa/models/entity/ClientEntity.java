@@ -44,6 +44,9 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date activationDate;
 	
+	@Column(name="photo", insertable=true, updatable=true, nullable=true)
+	private String photo;
+	
 	@PrePersist
 	public void prePersist() {
 		this.creationDate = new Date();
@@ -92,6 +95,14 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 
 	public void setActivationDate(Date activationDate) {
 		this.activationDate = activationDate;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	@Override
