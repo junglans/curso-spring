@@ -1,6 +1,7 @@
 package com.curso.springboot.jpa.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.nio.file.Paths;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -8,14 +9,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-	@Value("${application.resources.path}")
-	private String uploadPath;
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// Con esto añadimos carpetas externas como si fueran recursos internos, como
 		// si estuviera en la carpeta "resources".
+		String resourcePath = Paths.get("uploads").toAbsolutePath().toUri().toString();
 		super.addResourceHandlers(registry);
-		registry.addResourceHandler("/uploads/**").addResourceLocations("file:" + uploadPath);
+		registry.addResourceHandler("/uploads/**").addResourceLocations(resourcePath);
 	}
 
 }
