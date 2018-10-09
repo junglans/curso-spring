@@ -52,7 +52,7 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 	@Column(name="photo", insertable=true, updatable=true, nullable=true)
 	private String photo;
 	
-	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<InvoiceEntity> invoices;
 	
 	@PrePersist

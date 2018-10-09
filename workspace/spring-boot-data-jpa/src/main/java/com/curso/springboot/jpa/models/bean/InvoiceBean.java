@@ -2,6 +2,7 @@ package com.curso.springboot.jpa.models.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InvoiceBean implements Serializable {
 
@@ -19,6 +20,8 @@ public class InvoiceBean implements Serializable {
 	private Date creationDate;
 
 	private ClientBean client;
+	
+	private List<InvoiceItemBean> items;
 
 	public InvoiceBean() {
 		super();
@@ -66,6 +69,22 @@ public class InvoiceBean implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public List<InvoiceItemBean> getItems() {
+		return items;
+	}
+
+	public void setItems(List<InvoiceItemBean> items) {
+		this.items = items;
+	}
+
+	public Double getTotalInvoice() {
+		Double total = 0.0;
+		for (InvoiceItemBean item : items ) {
+			total += item.getTotalItem();
+		}
+		return total;
 	}
 
 	@Override
