@@ -31,6 +31,8 @@ public class ClientBean implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@NotNull
 	private Date activationDate;
+	
+	private String photo;
 
 	public ClientBean() {
 		super();
@@ -82,6 +84,14 @@ public class ClientBean implements Serializable {
 
 	public void setActivationDate(Date activationDate) {
 		this.activationDate = activationDate;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	@Override

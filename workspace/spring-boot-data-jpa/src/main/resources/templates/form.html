@@ -9,43 +9,39 @@
 		<div class="card bg-light">
 			<div class="card-header" th:text="${title}"></div>
 			<div class="card-body">
-				<form th:action="@{/form}" th:object="${client}" method="post">
+				<form th:action="@{/form}" th:object="${client}" method="post" enctype="multipart/form-data">
 					<div class="form-group row">
 						<label for="name" class="col-sm-2 col-form-label">Nombre</label>
 						<div class="col-sm-6">
-							<input type="text" th:field="*{name}" class="form-control"
-								th:errorclass="'form-control alert-danger'" /> <small
-								class="form-text text-danger"
-								th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+							<input type="text" th:field="*{name}" class="form-control"	th:errorclass="'form-control alert-danger'" /> 
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="surname" class="col-sm-2 col-form-label">Apellido</label>
 						<div class="col-sm-6">
-							<input type="text" th:field="*{surname}" class="form-control"
-								th:errorclass="'form-control alert-danger'" /> <small
-								class="form-text text-danger"
-								th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></small>
+							<input type="text" th:field="*{surname}" class="form-control" th:errorclass="'form-control alert-danger'" /> 
+							<small	class="form-text text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></small>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="email" class="col-sm-2 col-form-label">Email</label>
 						<div class="col-sm-6">
-							<input type="text" th:field="*{email}" class="form-control"
-								th:errorclass="'form-control alert-danger'" /> <small
-								class="form-text text-danger"
-								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+							<input type="text" th:field="*{email}" class="form-control"	th:errorclass="'form-control alert-danger'" /> 
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="activationDate" class="col-sm-2 col-form-label">Fecha</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control"
-								th:field="*{activationDate}"
-								th:errorclass="'form-control alert-danger'" /> <small
-								class="form-text text-danger"
-								th:if="${#fields.hasErrors('activationDate')}"
-								th:errors="*{activationDate}"></small>
+							<input type="text" class="form-control" th:field="*{activationDate}" th:errorclass="'form-control alert-danger'" /> 
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('activationDate')}"	th:errors="*{activationDate}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="file" class="col-sm-2 col-form-label">Fotografía</label>
+						<div class="col-sm-6">
+							<input type="file" name="file" class="form-control"/> 
 						</div>
 					</div>
 					<div class="form-group row">
@@ -54,6 +50,7 @@
 								class="btn btn-primary" />
 						</div>
 					</div>
+					
 					<!--  No necesitamos usar estos campos hidden si tenemos el cliente como un atributo de sesión
 			<input type="hidden" th:field="*{id}"/>
 			<input type="hidden" th:field="*{creationDate}"/>

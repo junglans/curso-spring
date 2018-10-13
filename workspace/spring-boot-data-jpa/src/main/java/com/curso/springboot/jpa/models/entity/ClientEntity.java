@@ -1,13 +1,18 @@
 package com.curso.springboot.jpa.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,13 +41,19 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 	@Column(insertable=true, updatable=true, nullable=false)
 	private String email;
 	
-	@Column(name="creation_date", insertable=true, updatable=true, nullable=false)
+	@Column(name="creation_date", insertable=true, updatable=false, nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	
 	@Column(name="activation_date", insertable=true, updatable=true, nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date activationDate;
+	
+	@Column(name="photo", insertable=true, updatable=true, nullable=true)
+	private String photo;
+	
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<InvoiceEntity> invoices;
 	
 	@PrePersist
 	public void prePersist() {
@@ -51,6 +62,7 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 	
 	public ClientEntity() {
 		super();
+		this.invoices = new ArrayList<InvoiceEntity>();
 	}
 	
 	@Override
@@ -94,6 +106,26 @@ public class ClientEntity extends Identifiable<Long> implements Serializable {
 		this.activationDate = activationDate;
 	}
 
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public List<InvoiceEntity> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<InvoiceEntity> invoices) {
+		this.invoices = invoices;
+	}
+
+	public void addInvoice(InvoiceEntity invoice) {
+		invoices.add(invoice);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
