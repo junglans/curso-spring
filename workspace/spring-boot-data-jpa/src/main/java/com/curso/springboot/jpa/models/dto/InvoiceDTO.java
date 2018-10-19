@@ -2,6 +2,7 @@ package com.curso.springboot.jpa.models.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InvoiceDTO implements Serializable {
 
@@ -16,17 +17,16 @@ public class InvoiceDTO implements Serializable {
 
 	private String observations;
 
-	 
 	private Date creationDate;
 
-	 
 	private ClientDTO client;
 
+	List<InvoiceItemDTO> items;
+	
 	public InvoiceDTO() {
 		super();
 	}
 
-	 
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +69,14 @@ public class InvoiceDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<InvoiceItemDTO> getItems() {
+		return items;
+	}
+
+	public void setItems(List<InvoiceItemDTO> items) {
+		this.items = items;
 	}
 
 	@Override

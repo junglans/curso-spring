@@ -10,7 +10,8 @@
 			<div class="card-header" th:text="${title}"></div>
 			<div class="card-body">
 
-				<img th:if="${client.photo != null}" class="img-thumbnail rouded float-left" style="max-width: 25%"
+				<img th:if="${client.photo != null}"
+					class="img-thumbnail rouded float-left" style="max-width: 25%"
 					th:src="@{/uploads/} + ${client.photo}" />
 
 				<ul class="list-group">
@@ -19,6 +20,26 @@
 					<li class="list-group-item" th:text="${client.email}"></li>
 					<li class="list-group-item" th:text="${client.activationDate}"></li>
 				</ul>
+				<div th:if="${#lists.isEmpty(client.invoices) }" class="alert alert-info my-4" th:text="'No hay facturas asignadas para el cliente ' + ${client.name} + ' ' + ${client.surname}"></div>
+				<table th:if="${not #lists.isEmpty(client.invoices) }" class="table table-bordered table-stripped my-4">
+					<thead>
+						<tr>
+							<th>Folio</th>
+							<th>Descripción</th>
+							<th>Fecha</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="invoice: ${client.invoices}">
+							<td th:text="${invoice.id}"></td>
+							<td th:text="${invoice.description}"></td>
+							<td th:text="${invoice.creationDate}"></td>
+							<td th:text="${invoice.total}"></td>
+						</tr>
+					</tbody>
+
+				</table>
 			</div>
 		</div>
 	</div>

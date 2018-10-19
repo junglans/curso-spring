@@ -79,7 +79,7 @@ public class InvoiceBean implements Serializable {
 		this.items = items;
 	}
 
-	public Double getTotalInvoice() {
+	public Double getTotal() {
 		Double total = 0.0;
 		for (InvoiceItemBean item : items ) {
 			total += item.getTotalItem();

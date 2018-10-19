@@ -2,6 +2,7 @@ package com.curso.springboot.jpa.models.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ClientDTO implements Serializable {
 
@@ -16,7 +17,7 @@ public class ClientDTO implements Serializable {
 	private Date creationDate;
 	private Date activationDate;
 	private String photo;
-	
+	private List<InvoiceDTO> invoices;
 	public ClientDTO() {
 		super();
 	}
@@ -75,6 +76,14 @@ public class ClientDTO implements Serializable {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public List<InvoiceDTO> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<InvoiceDTO> invoices) {
+		this.invoices = invoices;
 	}
 
 	@Override

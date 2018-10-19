@@ -26,8 +26,8 @@ public class ClientService implements IClientService {
 	 // Pasamos de la implementación basada en la implementación de DAO's a usar Spring DATA 
 	 // protected IBasicDAO<ClientEntity> clientDao;
 	 protected IClientDAO clientDao;
-	 @Transactional(propagation = Propagation.REQUIRED)
 	 
+	 @Transactional(propagation = Propagation.REQUIRED)
 	 public List<ClientDTO> findAll() {
 		 return mapper.map(clientDao.findAll(),  ClientDTO.class);
 	 }

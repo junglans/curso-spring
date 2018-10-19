@@ -2,6 +2,7 @@ package com.curso.springboot.jpa.models.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +33,7 @@ public class ClientBean implements Serializable {
 	@NotNull
 	private Date activationDate;
 	
+	private List<InvoiceBean> invoices;
 	private String photo;
 
 	public ClientBean() {
@@ -92,6 +94,14 @@ public class ClientBean implements Serializable {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public List<InvoiceBean> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<InvoiceBean> invoices) {
+		this.invoices = invoices;
 	}
 
 	@Override

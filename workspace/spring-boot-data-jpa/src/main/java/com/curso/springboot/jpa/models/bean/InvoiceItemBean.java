@@ -13,6 +13,7 @@ public class InvoiceItemBean implements Serializable {
 	private Long facturaId;
 
 	private ProductBean product;
+
 	public Long getId() {
 		return id;
 	}
@@ -44,10 +45,9 @@ public class InvoiceItemBean implements Serializable {
 	public void setProduct(ProductBean product) {
 		this.product = product;
 	}
-	
+
 	public Double getTotalItem() {
-		
-		return (product != null)?  quantity * product.getPrice():0.0;
+		return (product != null) ? quantity * product.getPrice() : 0.0;
 	}
 
 	@Override
@@ -87,5 +87,4 @@ public class InvoiceItemBean implements Serializable {
 		return true;
 	}
 
-	
 }
