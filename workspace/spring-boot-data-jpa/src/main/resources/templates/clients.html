@@ -24,6 +24,7 @@
 							<th>fecha activación</th>
 							<th>fecha creación</th>
 							<th>editar</th>
+							<th>crear factura</th>
 							<th>eliminar</th>
 						</tr>
 					</thead>
@@ -37,6 +38,8 @@
 							<td th:text="${client.creationDate}"></td>
 							<td><a class="btn btn-primary btn-xs"
 								th:href="@{/form/} + ${client.id}" th:text="'editar'"></a></td>
+							<td><a class="btn btn-primary btn-xs"
+								th:href="@{/invoices/form/} + ${client.id}" th:text="'crear factura'"></a></td>
 							<td><a class="btn btn-danger btn-xs"
 								th:href="@{/remove/} + ${client.id}" th:text="'eliminar'"
 								onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>

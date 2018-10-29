@@ -1,4 +1,4 @@
-package com.curso.springboot.jpa.controllers;
+ package com.curso.springboot.jpa.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
