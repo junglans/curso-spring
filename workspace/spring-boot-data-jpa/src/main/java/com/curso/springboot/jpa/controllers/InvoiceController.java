@@ -38,7 +38,7 @@ public class InvoiceController {
 		model.addAttribute("title", "Crear Factura");
 		model.addAttribute("invoice", invoice);
 		
-		return "factura/form";
+		return "invoices/form";
 	}
 
 }

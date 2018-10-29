@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class InvoiceBean implements Serializable {
 
 	/**
@@ -12,7 +14,7 @@ public class InvoiceBean implements Serializable {
 	private static final long serialVersionUID = 3044685575013990415L;
 
 	private Long id;
-
+	@NotEmpty
 	private String description;
 
 	private String observations;
