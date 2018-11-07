@@ -20,15 +20,21 @@
 					method="post">
 
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label" th:text="Descripción"></label>
+						<label for="description" class="col-sm-2 col-form-label" th:text="Descripción"></label>
 						<div class="col-sm-6">
 							<input type="text" th:field="*{description}" class="form-control" />
 						</div>
 					</div>
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label" th:text="Observaciones"></label>
+						<label for="observations" class="col-sm-2 col-form-label" th:text="Observaciones"></label>
 						<div class="col-sm-6">
 							<textarea th:field="*{observations}" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="search_product" class="col-sm-2 col-form-label" th:text="Buscar Producto"></label>
+						<div class="col-sm-6">
+							<input type="text" name="search_product" id="search_product " class="form-control" />
 						</div>
 					</div>
 					<div class="form-group row">
@@ -43,5 +49,6 @@
 		</div>
 	</div>
 	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="invoices/template/autocomplete_product :: javascript"></script>
 </body>
 </html>
