@@ -12,12 +12,12 @@
 					source: function(request, response) {
 						
 						$.ajax({
-							url: "/productos/load-products/" + request.term,
+							url: "/products/load-products/" + request.term,
 							dataType: "json",
 							data: {
 								term: request.term
 							},
-							sucess: function(data) {
+							success: function(data) {
 								response($.map(data, function(item) {
 									return {
 										value:item.id,

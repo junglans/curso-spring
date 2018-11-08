@@ -11,6 +11,6 @@ import com.curso.springboot.jpa.models.entity.ProductEntity;
 
 public interface IProductDAO  extends CrudRepository<ProductEntity, Long>{
 
-	@Query("Select p from ProductEntity where p.name like %?1%")
+	@Query("select p from ProductEntity p where p.name like %?1%")
 	public List<ProductEntity> findByName(String term);
 }
