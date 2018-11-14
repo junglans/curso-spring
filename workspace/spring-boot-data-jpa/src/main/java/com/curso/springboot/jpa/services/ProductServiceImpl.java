@@ -21,7 +21,7 @@ public class ProductServiceImpl implements IProductService {
 
 	@Override
 	public List<ProductDTO> findByName(String term) {
-		return mapper.map(this.dao.findByName(term), ProductDTO.class);
+		return mapper.map(this.dao.findByNameLikeIgnoreCase("%" + term + "%"), ProductDTO.class);
 	}
 
 }

@@ -13,4 +13,5 @@ public interface IProductDAO  extends CrudRepository<ProductEntity, Long>{
 
 	@Query("select p from ProductEntity p where p.name like %?1%")
 	public List<ProductEntity> findByName(String term);
+	public List<ProductEntity> findByNameLikeIgnoreCase(String term);
 }
