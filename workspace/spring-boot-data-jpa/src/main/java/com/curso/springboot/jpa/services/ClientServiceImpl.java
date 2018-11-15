@@ -17,7 +17,7 @@ import com.curso.springboot.jpa.models.entity.ClientEntity;
 import com.curso.springboot.jpa.utils.MapperUtil;
 
 @Service
-public class ClientService implements IClientService {
+public class ClientServiceImpl implements IClientService {
 
 	 @Autowired
 	 protected MapperUtil mapper;

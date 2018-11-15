@@ -33,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.springboot.jpa.models.bean.ClientBean;
 import com.curso.springboot.jpa.models.dto.ClientDTO;
-import com.curso.springboot.jpa.services.ClientService;
+import com.curso.springboot.jpa.services.ClientServiceImpl;
 import com.curso.springboot.jpa.services.IUploadFileService;
 import com.curso.springboot.jpa.utils.GlobalValues;
 import com.curso.springboot.jpa.utils.MapperUtil;
@@ -46,7 +46,7 @@ public class ClientController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
 	@Autowired
-	private ClientService clientService;
+	private ClientServiceImpl clientService;
 	@Autowired
 	private MapperUtil mapper;
 	@Autowired

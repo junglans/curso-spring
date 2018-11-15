@@ -6,4 +6,5 @@ import com.curso.springboot.jpa.models.dto.ProductDTO;
 
 public interface IProductService {
 	List<ProductDTO> findByName(String term);
+	ProductDTO findById(Long id);
 }
