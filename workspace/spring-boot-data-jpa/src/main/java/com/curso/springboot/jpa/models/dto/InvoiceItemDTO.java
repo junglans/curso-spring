@@ -11,7 +11,7 @@ public class InvoiceItemDTO implements Serializable {
 	private static final long serialVersionUID = -9156756966553514453L;
 	private Long id;
 	private Integer quantity;
-	private Long facturaId;
+	 
 	
 	private ProductDTO product;
 	private List<InvoiceItemDTO> items;
@@ -32,13 +32,7 @@ public class InvoiceItemDTO implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public Long getFacturaId() {
-		return facturaId;
-	}
-
-	public void setFacturaId(Long facturaId) {
-		this.facturaId = facturaId;
-	}
+	 
 
 	public ProductDTO getProduct() {
 		return product;
@@ -60,7 +54,6 @@ public class InvoiceItemDTO implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((facturaId == null) ? 0 : facturaId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
 		return result;
@@ -75,11 +68,7 @@ public class InvoiceItemDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		InvoiceItemDTO other = (InvoiceItemDTO) obj;
-		if (facturaId == null) {
-			if (other.facturaId != null)
-				return false;
-		} else if (!facturaId.equals(other.facturaId))
-			return false;
+ 
 		if (id == null) {
 			if (other.id != null)
 				return false;

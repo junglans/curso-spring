@@ -12,17 +12,24 @@
 				<h6>
 					<a th:text="'&laquo; Volver'" th:href="@{'/detail/' + ${invoice.client.id}}"></a>
 				</h6>
-				<h6 class="card-title"
-					th:text="'Cliente: ' + ${invoice.client.name} + ' ' + ${invoice.client.surname}">
-				</h6>
-
+				<table th:replace="invoices/template/template_items :: invoiceItems"></table>
 				<form th:action="@{/invoices/form}" th:object="${invoice}"
 					method="post">
-
+					<div class="form-group row">
+						<label for="cliente" class="col-sm-2 col-form-label"
+							th:text="'Cliente'"></label>
+						<input type="hidden" name="clientId" th:field="*{client.id}" value="${invoice.client.id}"/>
+						<div class="col-sm-6">
+							<input name="cliente"
+								th:value="${invoice.client.name} + ' ' + ${invoice.client.surname}"
+								class="form-control" disabled='disabled' />
+						</div>
+					</div>
 					<div class="form-group row">
 						<label for="description" class="col-sm-2 col-form-label" th:text="Descripción"></label>
-						<div class="col-sm-6">
-							<input type="text" th:field="*{description}" class="form-control" />
+						<div class="col-sm-6"> 
+							<input type="text" th:field="*{description}" class="form-control" th:errorclass="'form-control is-invalid'"/>
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -37,7 +44,7 @@
 							<input type="text" name="search_product" id="search_product" class="form-control" />
 						</div>
 					</div>
-					<table th:replace="invoices/template/template_items :: invoiceItems"></table>
+					
 					
 					<table id="loadProductItems" class="table table-sm table-striped table-hover">
 						<thead>

@@ -25,8 +25,8 @@ public class InvoiceItemEntity extends Identifiable<Long> implements Serializabl
 	private Long id;
 	@Column(insertable = true, updatable=true, nullable=false)
 	private Integer quantity;
-	@Column(name = "factura_id", insertable = true, updatable=false, nullable=false)
-	private Long facturaId;
+	//@Column(name = "factura_id", insertable = true, updatable=false, nullable=false)
+	//private Long facturaId;
 	
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn (name = "product_id")
@@ -53,13 +53,13 @@ public class InvoiceItemEntity extends Identifiable<Long> implements Serializabl
 		return null;
 	}
 
-	public Long getFacturaId() {
-		return facturaId;
-	}
-
-	public void setFacturaId(Long facturaId) {
-		this.facturaId = facturaId;
-	}
+//	public Long getFacturaId() {
+//		return facturaId;
+//	}
+//
+//	public void setFacturaId(Long facturaId) {
+//		this.facturaId = facturaId;
+//	}
 
 	public ProductEntity getProduct() {
 		return product;
@@ -73,7 +73,7 @@ public class InvoiceItemEntity extends Identifiable<Long> implements Serializabl
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((facturaId == null) ? 0 : facturaId.hashCode());
+//		result = prime * result + ((facturaId == null) ? 0 : facturaId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
@@ -89,11 +89,11 @@ public class InvoiceItemEntity extends Identifiable<Long> implements Serializabl
 		if (getClass() != obj.getClass())
 			return false;
 		InvoiceItemEntity other = (InvoiceItemEntity) obj;
-		if (facturaId == null) {
-			if (other.facturaId != null)
-				return false;
-		} else if (!facturaId.equals(other.facturaId))
-			return false;
+//		if (facturaId == null) {
+//			if (other.facturaId != null)
+//				return false;
+//		} else if (!facturaId.equals(other.facturaId))
+//			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;

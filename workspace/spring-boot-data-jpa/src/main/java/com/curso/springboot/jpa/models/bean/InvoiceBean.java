@@ -15,9 +15,10 @@ public class InvoiceBean implements Serializable {
 	private static final long serialVersionUID = 3044685575013990415L;
 
 	private Long id;
+	
 	@NotEmpty
 	private String description;
-
+	@NotEmpty
 	private String observations;
 
 	private Date creationDate;

@@ -1,10 +1,14 @@
 package com.curso.springboot.jpa.controllers;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,13 +61,26 @@ public class InvoiceController {
 	}
 	
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String saveInvoice(InvoiceBean invoice, 
+	public String saveInvoice(@Valid @ModelAttribute("invoice") InvoiceBean invoice, 
+							  BindingResult result,
+							  Model model,
 							  @RequestParam(name="item_id[]", required=false) Long[] itemId,
 							  @RequestParam(name="quantity[]", required=false) Integer[] quantity,
 							  RedirectAttributes flash,
 							  SessionStatus status) {
+		if (result.hasErrors()) {
+			model.addAttribute("title", "Crear Factura");
+			return "/invoices/form";
+		}
+		
+		if (itemId == null || itemId.length == 0) {
+			model.addAttribute("title", "Crear Factura");
+			model.addAttribute("error", "Error: Debe seleccionar al menos un producto.");
+			return "invoices/form";
+		}
 		
 		for(int ind = 0; ind < itemId.length; ind++) {
+			
 			ProductBean product = mapper.map(productService.findById(itemId[ind]), ProductBean.class);
 			
 			InvoiceItemBean invoiceItem = new InvoiceItemBean();

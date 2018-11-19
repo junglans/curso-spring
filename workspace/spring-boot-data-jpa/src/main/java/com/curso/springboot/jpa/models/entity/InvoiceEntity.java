@@ -43,8 +43,8 @@ public class InvoiceEntity extends Identifiable<Long> implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ClientEntity client;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "factura_id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "factura_id", referencedColumnName = "id", nullable = false)
 	private List<InvoiceItemEntity> items;
 	
 	public InvoiceEntity() {
