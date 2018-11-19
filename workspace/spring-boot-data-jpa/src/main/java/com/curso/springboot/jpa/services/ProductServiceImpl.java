@@ -28,6 +28,7 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@Transactional(readOnly=true, propagation = Propagation.REQUIRED)
 	public ProductDTO findById(Long id) {
 		return mapper.map(dao.findOne(id), ProductDTO.class);
 	}

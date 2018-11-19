@@ -25,4 +25,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	public void saveInvoice(InvoiceDTO invoice) {
 		dao.save(mapper.map(invoice, InvoiceEntity.class));
 	}
+
+	@Override
+	@Transactional(readOnly=true, propagation = Propagation.REQUIRED)
+	public InvoiceDTO findInvoiceById(Long id) {
+		return mapper.map(dao.findOne(id), InvoiceDTO.class);
+	}
 }

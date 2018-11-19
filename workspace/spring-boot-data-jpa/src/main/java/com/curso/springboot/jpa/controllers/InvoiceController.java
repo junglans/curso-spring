@@ -42,6 +42,22 @@ public class InvoiceController {
 	@Autowired
 	private MapperUtil mapper;
 
+	@RequestMapping(value="/detail/{invoiceId}", method = RequestMethod.GET )
+	public String viewInvoice(@PathVariable(value = "invoiceId") Long invoiceId,
+							  Model model,
+							  RedirectAttributes flash
+							  ) {
+		
+		InvoiceBean invoice = mapper.map(invoiceService.findInvoiceById(invoiceId), InvoiceBean.class);
+		if (invoice == null) {
+			flash.addFlashAttribute("error", "No se encontró la factura.");
+			return "redirect:/clients";
+		}
+		model.addAttribute("title", "Ver factura " + invoice.getDescription());
+		model.addAttribute("invoice", invoice);
+		return "invoices/detail";
+	}
+	 
 	@RequestMapping(value = "/form/{clientId}", method = RequestMethod.GET)
 	public String newInvoice(@PathVariable(value = "clientId") Long clientId, Model model, RedirectAttributes flash) {
 
