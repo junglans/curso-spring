@@ -38,6 +38,7 @@
 							<th>Fecha</th>
 							<th>Total</th>
 							<th>Ver</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,7 +47,8 @@
 							<td th:text="${invoice.description}"></td>
 							<td th:text="${invoice.creationDate}"></td>
 							<td th:text="${invoice.total}"></td>
-							<td><a th:href="@{'/invoices/detail/' + ${invoice.id}}" class="btn btn-primary btn-xs" th:text="Detalle"></a></td>
+							<td><a th:href="@{'/invoices/detail/' + ${invoice.id}}" class="btn btn-primary btn-xs" th:text="'Detalle'"></a></td>
+							<td><a th:href="@{'/invoices/delete/' + ${invoice.id}}" class="btn btn-danger btn-xs" th:text="'Eliminar'" onclick="return confirm('¿Estás seguro que desea eliminar la factura?')"></a></td>
 						</tr>
 					</tbody>
 

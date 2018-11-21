@@ -60,6 +60,10 @@
 						<p th:text="'No tiene observaciones'" class="card-text" th:if="${#strings.isEmpty(invoice.observations)}"></p>
 					</div>
 				</div>
+				<h4 class="card-title">
+					<a th:href="@{'/detail/' + ${invoice.client.id}}"
+						class="btn btn-light btn-xs">&laquo; volver</a>
+				</h4>
 			</div>
 		</div>
 	</div>

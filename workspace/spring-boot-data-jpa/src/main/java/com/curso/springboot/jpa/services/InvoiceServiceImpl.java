@@ -31,4 +31,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	public InvoiceDTO findInvoiceById(Long id) {
 		return mapper.map(dao.findOne(id), InvoiceDTO.class);
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void deleteInvoice(Long id) {
+		dao.delete(id);	
+	}
+
+	@Override
+	public InvoiceDTO fetchByIdWithClientWithInvoiceItemWithProduct(Long id) {
+		InvoiceEntity entity = dao.fetchByIdWithClientWithInvoiceItemWithProduct(id);
+		return mapper.map(entity, InvoiceDTO.class);
+	}
 }

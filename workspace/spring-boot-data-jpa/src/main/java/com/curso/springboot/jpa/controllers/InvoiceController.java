@@ -1,5 +1,7 @@
 package com.curso.springboot.jpa.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import com.curso.springboot.jpa.models.bean.ClientBean;
 import com.curso.springboot.jpa.models.bean.InvoiceBean;
 import com.curso.springboot.jpa.models.bean.InvoiceItemBean;
 import com.curso.springboot.jpa.models.bean.ProductBean;
+import com.curso.springboot.jpa.models.dto.ClientDTO;
 import com.curso.springboot.jpa.models.dto.InvoiceDTO;
 import com.curso.springboot.jpa.services.IClientService;
 import com.curso.springboot.jpa.services.IInvoiceService;
@@ -48,7 +51,7 @@ public class InvoiceController {
 							  RedirectAttributes flash
 							  ) {
 		
-		InvoiceBean invoice = mapper.map(invoiceService.findInvoiceById(invoiceId), InvoiceBean.class);
+		InvoiceBean invoice = mapper.map(invoiceService.fetchByIdWithClientWithInvoiceItemWithProduct(invoiceId), InvoiceBean.class);
 		if (invoice == null) {
 			flash.addFlashAttribute("error", "No se encontró la factura.");
 			return "redirect:/clients";
@@ -112,5 +115,28 @@ public class InvoiceController {
 		status.setComplete();
 		flash.addFlashAttribute("success", "Factura creada con éxito");
 		return "redirect:/invoices/form/" + invoice.getClient().getId();
+	}
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public String saveInvoice(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+		
+		InvoiceBean invoice = mapper.map(invoiceService.findInvoiceById(id), InvoiceBean.class);
+		if(invoice != null) {
+			ClientBean client = invoice.getClient();
+			List<InvoiceBean> invoices = client.getInvoices();
+			invoices.remove(invoices.indexOf(invoice));
+			 
+			clientService.save(mapper.map(client, ClientDTO.class));
+			invoiceService.deleteInvoice(id);
+			
+			flash.addFlashAttribute("success", "Factura eliminada con éxito");
+			return "redirect:/detail/" + invoice.getClient().getId();
+		} else {
+			flash.addFlashAttribute("error", "La factura no exite en la base de datos");
+			return "redirect:/clients/";
+		}
+		
+		
+		
 	}
 }
