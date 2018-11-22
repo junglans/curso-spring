@@ -14,4 +14,5 @@ public interface IClientService {
 	 ClientDTO save(ClientDTO client);
 	 ClientDTO findById(Long id);
 	 void delete(Long id);
+	 ClientDTO fetchByIdWithInvoices(Long id);
 }

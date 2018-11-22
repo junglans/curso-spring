@@ -70,7 +70,7 @@ public class ClientController {
 	@RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
 	public String detail(@PathVariable(value = "id") Long id, Model model, RedirectAttributes flash) {
 
-		ClientBean client = mapper.map(clientService.findById(id), ClientBean.class);
+		ClientBean client = mapper.map(clientService.fetchByIdWithInvoices(id), ClientBean.class);
 		if (client == null) {
 			flash.addFlashAttribute("error", "El cliente no existe en la base de datos");
 			return "clients";
@@ -83,7 +83,7 @@ public class ClientController {
 	@RequestMapping(value = "/clients", method = RequestMethod.GET)
 	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
-		Pageable pageRequest = new PageRequest(page, 5);
+		Pageable pageRequest =  PageRequest.of(page, 5);
 		Page<ClientDTO> dtoPage = clientService.findAll(pageRequest);
 
 		List<ClientBean> beanList = mapper.map(dtoPage.getContent(), ClientBean.class);

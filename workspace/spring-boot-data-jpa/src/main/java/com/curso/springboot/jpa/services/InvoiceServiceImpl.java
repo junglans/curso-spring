@@ -29,13 +29,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	@Override
 	@Transactional(readOnly=true, propagation = Propagation.REQUIRED)
 	public InvoiceDTO findInvoiceById(Long id) {
-		return mapper.map(dao.findOne(id), InvoiceDTO.class);
+		return mapper.map(dao.findById(id).orElse(null), InvoiceDTO.class);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void deleteInvoice(Long id) {
-		dao.delete(id);	
+		dao.deleteById(id);	
 	}
 
 	@Override
