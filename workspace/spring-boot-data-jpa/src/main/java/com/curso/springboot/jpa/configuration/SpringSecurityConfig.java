@@ -1,7 +1,5 @@
 package com.curso.springboot.jpa.configuration;
 
- 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,7 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+	/**
+	 * Note that the AuthenticationManagerBuilder is @Autowired into a method in a @Bean - 
+	 * that is what makes it build the global (parent) AuthenticationManager.
+	 * @param build
+	 * @throws Exception
+	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder build) throws Exception {
 		
@@ -40,7 +43,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .anyRequest().authenticated();
 		 
 	}
-	
-	
-	 
 }
