@@ -80,7 +80,7 @@ public class ClientController {
 		return "detail";
 	}
 
-	@RequestMapping(value = "/clients", method = RequestMethod.GET)
+	@RequestMapping(value = {"/","/clients"}, method = RequestMethod.GET)
 	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
 		Pageable pageRequest =  PageRequest.of(page, 5);
