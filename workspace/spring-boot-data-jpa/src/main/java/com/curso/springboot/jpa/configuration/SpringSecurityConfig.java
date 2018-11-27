@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -44,7 +45,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .and()
 		 .formLogin().loginPage("/login").permitAll()
 		 .and()
-		 .logout().permitAll();
+		 .logout().permitAll()
+		 .logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET"))
+		 .logoutSuccessUrl("/login")
+		 .invalidateHttpSession(true)
+		 .deleteCookies("JSESSIONID");
 		 
 	}
 }
