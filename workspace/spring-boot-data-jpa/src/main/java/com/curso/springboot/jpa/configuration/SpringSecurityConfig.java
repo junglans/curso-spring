@@ -35,21 +35,23 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		 http.authorizeRequests()
-		 .antMatchers("/", "/css/**", "/js/**", "/images/**", "/clients").permitAll() // rutas publicas
+		 .antMatchers("/", "/css/**", "/js/**", "/images/**").permitAll() // rutas publicas
 		 .antMatchers("/detail/**").hasAnyRole("USER")
 		 .antMatchers("/uploads/**").hasAnyRole("USER")
 		 .antMatchers("/form/**").hasAnyRole("ADMIN")
 		 .antMatchers("/delete/**").hasAnyRole("ADMIN")
+		 .antMatchers("/clients/**").hasAnyRole("ADMIN", "USER")
 		 .antMatchers("/invoices/**").hasAnyRole("ADMIN")
 		 .anyRequest().authenticated()
 		 .and()
 		 .formLogin().loginPage("/login").permitAll()
 		 .and()
 		 .logout().permitAll()
-		 .logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET"))
-		 .logoutSuccessUrl("/login")
+		 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		 .logoutSuccessUrl("/login?logout")
 		 .invalidateHttpSession(true)
-		 .deleteCookies("JSESSIONID");
+		 .deleteCookies("JSESSIONID")
+		 .and().exceptionHandling().accessDeniedPage("/error_403");
 		 
 	}
 }
