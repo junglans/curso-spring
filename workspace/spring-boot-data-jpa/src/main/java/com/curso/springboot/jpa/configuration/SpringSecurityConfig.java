@@ -11,8 +11,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.curso.springboot.jpa.auth.handlers.LoginSuccesshandler;
+
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private LoginSuccesshandler loginSuccessHandler;
 	/**
 	 * Note that the AuthenticationManagerBuilder is @Autowired into a method in a @Bean - 
 	 * that is what makes it build the global (parent) AuthenticationManager.
@@ -41,10 +46,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .antMatchers("/form/**").hasAnyRole("ADMIN")
 		 .antMatchers("/delete/**").hasAnyRole("ADMIN")
 		 .antMatchers("/clients/**").hasAnyRole("ADMIN", "USER")
-		 .antMatchers("/invoices/**").hasAnyRole("ADMIN")
+		 .antMatchers("/invoices/delete/**").hasAnyRole("ADMIN")
+		 .antMatchers("/invoices/detail/**").permitAll()
 		 .anyRequest().authenticated()
 		 .and()
-		 .formLogin().loginPage("/login").permitAll()
+		 .formLogin().loginPage("/login").successHandler(loginSuccessHandler).permitAll()
 		 .and()
 		 .logout().permitAll()
 		 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

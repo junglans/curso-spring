@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" sec:authorize="hasRole('ADMIN')">
 <head th:replace="layout/layout :: head">
 <meta charset="UTF-8" />
 </head>
