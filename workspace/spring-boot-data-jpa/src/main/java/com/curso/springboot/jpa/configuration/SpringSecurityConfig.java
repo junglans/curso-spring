@@ -11,13 +11,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.curso.springboot.jpa.auth.handlers.LoginSuccesshandler;
+import com.curso.springboot.jpa.auth.handlers.LoginSuccessHandler;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private LoginSuccesshandler loginSuccessHandler;
+	private LoginSuccessHandler loginSuccessHandler;
 	/**
 	 * Note that the AuthenticationManagerBuilder is @Autowired into a method in a @Bean - 
 	 * that is what makes it build the global (parent) AuthenticationManager.

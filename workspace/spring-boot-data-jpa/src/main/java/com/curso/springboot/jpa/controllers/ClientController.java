@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,6 +19,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -83,6 +88,14 @@ public class ClientController {
 	@RequestMapping(value = {"/clients"}, method = RequestMethod.GET)
 	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			LOGGER.info("El usuario '" + authentication.getName() + "' ha accedido al listado de clientes" );
+			
+			if (this.hasRole("ROLE_ADMIN")) {
+				LOGGER.info("El usuario '" + authentication.getName() + "' tiene el Rol ADMIN." );
+			}
+		}
 		Pageable pageRequest =  PageRequest.of(page, 5);
 		Page<ClientDTO> dtoPage = clientService.findAll(pageRequest);
 
@@ -189,5 +202,25 @@ public class ClientController {
 			return "redirect:/clients";
 		}
 
+	}
+	
+	private boolean hasRole(String roleId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		//final Boolean[] hasRole = {false};
+		
+		if (authentication != null) {
+			return authentication.getAuthorities().contains(new SimpleGrantedAuthority(roleId));
+			/*
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			authorities.forEach((authority) -> {
+				if (authority.getAuthority().equals(roleId)) {
+					  hasRole[0] =  true;
+				}
+			});
+			*/
+		}
+		//return hasRole[0];
+		return false;
+		
 	}
 }

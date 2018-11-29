@@ -4,7 +4,6 @@ import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +18,8 @@ public class LoginController {
 						Model model, Principal principal, RedirectAttributes flash) {
 		
 		if (principal != null) {
-			BindingAwareModelMap bModel = (BindingAwareModelMap)model;
-			bModel.asMap().forEach((key,value) -> {
+			 
+			model.asMap().forEach((key,value) -> {
 				flash.addFlashAttribute(key, value);
 			});
 				
