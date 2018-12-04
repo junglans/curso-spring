@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -19,10 +20,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,6 +60,7 @@ public class ClientController {
 	@Autowired
 	private IUploadFileService uploadFileService;
 
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/uploads/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> getPhoto(@PathVariable(value = "filename") String filename) throws Exception {
 
@@ -86,14 +90,31 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = {"/clients"}, method = RequestMethod.GET)
-	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model, HttpServletRequest request) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
+			
+			// Aquí tenemos varías formas de validar si un usuario tiene un rol determinado.
+			
 			LOGGER.info("El usuario '" + authentication.getName() + "' ha accedido al listado de clientes" );
 			
 			if (this.hasRole("ROLE_ADMIN")) {
 				LOGGER.info("El usuario '" + authentication.getName() + "' tiene el Rol ADMIN." );
+			}
+			// Otro forma de hacerlo, que es lo mismo que usar la función hasRole.
+			SecurityContextHolderAwareRequestWrapper scrw = new SecurityContextHolderAwareRequestWrapper(request, "ROLE_"); // usamos el prefijo ROLE_
+			if (scrw.isUserInRole("ADMIN")) {
+				LOGGER.info("SecurityContextHolderAwareRequestWrappe: El usuario '" + authentication.getName() + "' tiene el Rol ADMIN." );
+			} else {
+				LOGGER.info("SecurityContextHolderAwareRequestWrappe: El usuario '" + authentication.getName() + "' NO tiene el Rol ADMIN." );
+			}
+			
+			//Otra forma de hacerlo es con el objeto request.
+			if (request.isUserInRole("ROLE_ADMIN")) {
+				LOGGER.info("request: El usuario '" + authentication.getName() + "' tiene el Rol ADMIN." );
+			} else {
+				LOGGER.info("request: El usuario '" + authentication.getName() + "' NO tiene el Rol ADMIN." );
 			}
 		}
 		Pageable pageRequest =  PageRequest.of(page, 5);
@@ -110,6 +131,7 @@ public class ClientController {
 
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public String create(Model model) {
 		model.addAttribute("title", "Formulario de Cliente");
@@ -117,6 +139,7 @@ public class ClientController {
 		return "form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String save(@ModelAttribute("client") @Valid ClientBean client, // el model atribute se toma de la sesión.
 			@RequestParam("file") MultipartFile photo, BindingResult bindingResult, Model model, SessionStatus status,
@@ -159,7 +182,7 @@ public class ClientController {
 		flash.addFlashAttribute("success", "Cliente creado con éxito.");
 		return "redirect:/clients";
 	}
-
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 
