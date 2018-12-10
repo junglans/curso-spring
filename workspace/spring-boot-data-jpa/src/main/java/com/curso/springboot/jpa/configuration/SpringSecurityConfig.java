@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.curso.springboot.jpa.auth.handlers.LoginSuccessHandler;
 
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	

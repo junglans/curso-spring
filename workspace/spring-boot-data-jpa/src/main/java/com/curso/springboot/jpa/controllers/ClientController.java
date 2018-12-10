@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,7 +60,7 @@ public class ClientController {
 	@Autowired
 	private IUploadFileService uploadFileService;
 
-	@Secured("ROLE_USER")
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@RequestMapping(value = "/uploads/{filename:.+}", method = RequestMethod.GET)
 	public ResponseEntity<Resource> getPhoto(@PathVariable(value = "filename") String filename) throws Exception {
 
@@ -130,8 +130,9 @@ public class ClientController {
 		return "clients";
 
 	}
-
-	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ROLE_ADMIN')") // Si tenemos activado en la configuración prePostEnabled
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')") // Si queremos varios roles
+	//@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public String create(Model model) {
 		model.addAttribute("title", "Formulario de Cliente");
@@ -182,6 +183,7 @@ public class ClientController {
 		flash.addFlashAttribute("success", "Cliente creado con éxito.");
 		return "redirect:/clients";
 	}
+	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
 	public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
