@@ -1,15 +1,19 @@
 package com.curso.springboot.jpa.configuration;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User.UserBuilder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.curso.springboot.jpa.auth.handlers.LoginSuccessHandler;
@@ -20,6 +24,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private LoginSuccessHandler loginSuccessHandler;
+	
+	@Autowired
+	private DataSource dataSource;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	/**
 	 * Note that the AuthenticationManagerBuilder is @Autowired into a method in a @Bean - 
 	 * that is what makes it build the global (parent) AuthenticationManager.
@@ -28,14 +39,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder build) throws Exception {
+	
 		
+		build.jdbcAuthentication()
+		.dataSource(dataSource)
+		.passwordEncoder(passwordEncoder)
+		.usersByUsernameQuery("SELECT username, password, enabled FROM USERS WHERE username=?")
+		.authoritiesByUsernameQuery("SELECT u.username, a.authority FROM AUTHORITIES a INNER JOIN USERS u ON (a.user_id = u.id) WHERE u.username = ?");
+		/*	Vamos a utilizar autenticación jdbc
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		UserBuilder usersBuilder = User.builder().passwordEncoder(encoder::encode);
 		
 		build.inMemoryAuthentication()
 		.withUser(usersBuilder.username("admin").password("12345").roles("ADMIN","USER"))
 		.withUser(usersBuilder.username("juan").password("12345").roles("USER"));
-		
+		*/
 	}
 
 	@Override
