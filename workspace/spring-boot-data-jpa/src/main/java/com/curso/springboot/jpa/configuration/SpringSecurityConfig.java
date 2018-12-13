@@ -1,7 +1,5 @@
 package com.curso.springboot.jpa.configuration;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.curso.springboot.jpa.auth.handlers.LoginSuccessHandler;
+import com.curso.springboot.jpa.services.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
@@ -26,7 +25,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	private LoginSuccessHandler loginSuccessHandler;
 	
 	@Autowired
-	private DataSource dataSource;
+	//private DataSource dataSource;
+	private JpaUserDetailsService userDetailsService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -40,13 +40,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder build) throws Exception {
 	
+		build.userDetailsService(userDetailsService)
+		.passwordEncoder(passwordEncoder);
+		/*
+		 * Esta es la configuración de una autentificación usando jdbc.
+ 		build.jdbcAuthentication()
+ 		.dataSource(dataSource)
+ 		.passwordEncoder(passwordEncoder)
+ 		.usersByUsernameQuery("SELECT username, password, enabled FROM USERS WHERE username=?")
+ 		.authoritiesByUsernameQuery("SELECT U.username, R.authority FROM USERS U INNER JOIN USER_ROLE UR ON (UR.user_id = u.id) INNER JOIN ROLES R ON (UR.role_id = r.id) WHERE u.username = ?");
+		*/
 		
-		build.jdbcAuthentication()
-		.dataSource(dataSource)
-		.passwordEncoder(passwordEncoder)
-		.usersByUsernameQuery("SELECT username, password, enabled FROM USERS WHERE username=?")
-		.authoritiesByUsernameQuery("SELECT U.username, R.authority FROM USERS U INNER JOIN USER_ROLE UR ON (UR.user_id = u.id) INNER JOIN ROLES R ON (UR.role_id = r.id) WHERE u.username = ?");
-		/*	Vamos a utilizar autenticación jdbc
+		/*	Esta es la configuración para una autentificación en memoria
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		UserBuilder usersBuilder = User.builder().passwordEncoder(encoder::encode);
 		
