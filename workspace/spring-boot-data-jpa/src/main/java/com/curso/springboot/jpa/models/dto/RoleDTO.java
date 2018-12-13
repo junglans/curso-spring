@@ -1,6 +1,7 @@
 package com.curso.springboot.jpa.models.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RoleDTO implements Serializable {
 
@@ -11,6 +12,7 @@ public class RoleDTO implements Serializable {
 	
 	private Long id;
 	private String authority;
+	private List<UserDTO> users;
 	
 	public Long getId() {
 		return id;
@@ -23,6 +25,13 @@ public class RoleDTO implements Serializable {
 	}
 	public void setAuthority(String authority) {
 		this.authority = authority;
+	}
+	
+	public List<UserDTO> getUsers() {
+		return users;
+	}
+	public void setUsers(List<UserDTO> users) {
+		this.users = users;
 	}
 	@Override
 	public int hashCode() {

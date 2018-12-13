@@ -1,6 +1,7 @@
 package com.curso.springboot.jpa.models.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RoleBean implements Serializable {
 
@@ -8,22 +9,35 @@ public class RoleBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4835188426866717432L;
-	
+
 	private Long id;
 	private String authority;
-	
+	private List<UserBean> users;
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getAuthority() {
 		return authority;
 	}
+
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
+
+	public List<UserBean> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserBean> users) {
+		this.users = users;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -32,6 +46,7 @@ public class RoleBean implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,9 +68,10 @@ public class RoleBean implements Serializable {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "RoleDTO [id=" + id + ", authority=" + authority + "]";
 	}
-	
+
 }
