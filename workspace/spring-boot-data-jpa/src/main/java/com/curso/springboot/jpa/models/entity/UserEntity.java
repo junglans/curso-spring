@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
  
@@ -36,8 +39,13 @@ public class UserEntity implements Serializable {
 	@Column(insertable=true, updatable=true, nullable=false)
 	private Boolean enabled;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(referencedColumnName = "id", name="user_id", nullable = false)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name="USER_ROLE", 
+			   joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+			   inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+			   foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
+	)
+	 
 	private List<RoleEntity> roles;
 	
 	public Long getId() {

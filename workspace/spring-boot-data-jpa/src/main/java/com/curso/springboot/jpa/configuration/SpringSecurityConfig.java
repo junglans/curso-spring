@@ -45,7 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.dataSource(dataSource)
 		.passwordEncoder(passwordEncoder)
 		.usersByUsernameQuery("SELECT username, password, enabled FROM USERS WHERE username=?")
-		.authoritiesByUsernameQuery("SELECT u.username, a.authority FROM AUTHORITIES a INNER JOIN USERS u ON (a.user_id = u.id) WHERE u.username = ?");
+		.authoritiesByUsernameQuery("SELECT U.username, R.authority FROM USERS U INNER JOIN USER_ROLE UR ON (UR.user_id = u.id) INNER JOIN ROLES R ON (UR.role_id = r.id) WHERE u.username = ?");
 		/*	Vamos a utilizar autenticación jdbc
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		UserBuilder usersBuilder = User.builder().passwordEncoder(encoder::encode);
