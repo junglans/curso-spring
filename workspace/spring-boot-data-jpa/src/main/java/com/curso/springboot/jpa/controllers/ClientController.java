@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -58,6 +60,8 @@ public class ClientController {
 	private MapperUtil mapper;
 	@Autowired
 	private IUploadFileService uploadFileService;
+	@Autowired
+	private MessageSource msgSource;
 
 	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@RequestMapping(value = "/uploads/{filename:.+}", method = RequestMethod.GET)
@@ -89,7 +93,7 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = {"/clients"}, method = RequestMethod.GET)
-	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model, HttpServletRequest request) {
+	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model, HttpServletRequest request, Locale locale) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
@@ -122,14 +126,15 @@ public class ClientController {
 		List<ClientBean> beanList = mapper.map(dtoPage.getContent(), ClientBean.class);
 		Page<ClientBean> beanPage = new PageImpl<ClientBean>(beanList, pageRequest, dtoPage.getTotalElements());
 		PageRenderer<ClientBean> pageRenderer = new PageRenderer<ClientBean>("/clients", beanPage);
-		model.addAttribute("title", "Listado de Clientes");
+		model.addAttribute("title", msgSource.getMessage("text.client.title", null, locale));
 		model.addAttribute("clientList", beanPage);
 		model.addAttribute("page", pageRenderer);
 
 		return "clients";
 
 	}
-	@PreAuthorize("hasRole('ROLE_ADMIN')") // Si tenemos activado en la configuración prePostEnabled
+	// Si tenemos activado en la configuración prePostEnabled, PreAuthorize verifica la autorización antes de entrar en el método
+	@PreAuthorize("hasRole('ROLE_ADMIN')")  
 	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')") // Si queremos varios roles
 	//@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.GET)

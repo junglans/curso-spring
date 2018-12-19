@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"><meta charset="UTF-8" /></head>
@@ -8,7 +8,7 @@
 
 	<div class="container py-4">
 
-		<div class="card bg-light">
+		<div class="card bg-light " style="width:80rem;">
 			<div class="card-header" th:text="${title}"></div>
 			<div class="card-body">
 				<h4>
@@ -18,11 +18,11 @@
 					<thead class="thead-inverse">
 						<tr>
 							<th>id</th>
-							<th>nombre</th>
-							<th>apellido</th>
-							<th>email</th>
-							<th>fecha activación</th>
-							<th>fecha creación</th>
+							<th th:text="#{text.client.name}">nombre</th>
+							<th th:text="#{text.client.surname}">apellido</th>
+							<th th:text="#{text.client.email}">email</th>
+							<th th:text="#{text.client.activation.date}">fecha activación</th>
+							<th th:text="#{text.client.creation.date}">fecha creación</th>
 							<th sec:authorize="hasRole('ADMIN')">editar</th>
 							<th sec:authorize="hasRole('ADMIN')">crear factura</th>
 							<th sec:authorize="hasRole('ADMIN')">eliminar</th>
