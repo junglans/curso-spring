@@ -43,6 +43,11 @@ public class MvcConfig implements WebMvcConfigurer {
 	 * 
 	 * ***********************************/
 	@Bean
+	/**
+	 * Para que la aplicación sea capaz de resolver el locale que se está utilizando es necesario 
+	 * registrar un LocaleResolver
+	 * @return
+	 */
 	public LocaleResolver localeResolver() {
 		// El locale se guardará enla sesión http.
 		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
@@ -51,6 +56,11 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
+	/**
+	 * Este interceptor se ejecuta en cada petición, en cada request, y modifica el locale basado en el valor de
+	 * el parámetro lang.
+	 * @return
+	 */
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("lang");
@@ -58,6 +68,9 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 
 	@Override
+	/**
+	 * Registramos el interceptor.
+	 */
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor( localeChangeInterceptor() );
 	}
