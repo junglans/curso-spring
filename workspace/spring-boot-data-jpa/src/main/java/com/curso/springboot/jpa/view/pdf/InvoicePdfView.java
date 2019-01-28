@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
@@ -26,16 +27,25 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class InvoicePdfView extends AbstractPdfView {
 
+	// Se hace mekor con el MessageSourceAccesor que se hereda de AbstractPdfView
+	//@Autowired
+	//private MessageSource messageSource;
+	
+	//@Autowired
+	//private LocaleResolver localeResolver;
+	
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		MessageSourceAccessor messages = getMessageSourceAccessor();
 		
 		InvoiceBean invoice = (InvoiceBean)model.get("invoice");
 		
 		PdfPTable clientDataTable = new PdfPTable(1);
 		clientDataTable.setSpacingAfter(20);
 		
-		PdfPCell cell = new PdfPCell(new Phrase("Datos del Cliente"));
+		PdfPCell cell = new PdfPCell(new Phrase(messages.getMessage("text.invoice.view.client.data")));
 		cell.setBackgroundColor(new Color(184,218,255));
 		cell.setPadding(8f);
 		
@@ -45,13 +55,13 @@ public class InvoicePdfView extends AbstractPdfView {
 		
 		PdfPTable invoiceDataTable = new PdfPTable(1);
 		invoiceDataTable.setSpacingAfter(20);
-		cell = new PdfPCell(new Phrase("Datos de la factura"));
+		cell = new PdfPCell(new Phrase(messages.getMessage("text.invoice.view.invoice.data")));
 		cell.setBackgroundColor(new Color(195,230,203));
 		cell.setPadding(8f);
 		invoiceDataTable.addCell(cell);
-		invoiceDataTable.addCell("Folio: " + invoice.getId());
-		invoiceDataTable.addCell("Descripción: " + invoice.getDescription());
-		invoiceDataTable.addCell("Fecha: " + invoice.getCreationDate());
+		invoiceDataTable.addCell(messages.getMessage("text.invoice.view.invoice.page") + ":" + invoice.getId());
+		invoiceDataTable.addCell(messages.getMessage("text.invoice.view.invoice.description") + ":" + invoice.getDescription());
+		invoiceDataTable.addCell(messages.getMessage("text.invoice.view.invoice.date") + ":" + invoice.getCreationDate());
 		
 		document.add(clientDataTable);
 		document.add(invoiceDataTable);
@@ -59,10 +69,10 @@ public class InvoicePdfView extends AbstractPdfView {
 		// cuatro columnas
 		PdfPTable detailDataTable = new PdfPTable(4);
 		detailDataTable.setWidths(new float[] {3.5f, 1f,1f,1f});
-		detailDataTable.addCell("Producto");
-		detailDataTable.addCell("Precio");
-		detailDataTable.addCell("Cantidad");
-		detailDataTable.addCell("Total");
+		detailDataTable.addCell(messages.getMessage("text.invoice.view.invoice.product") );
+		detailDataTable.addCell(messages.getMessage("text.invoice.view.invoice.price"));
+		detailDataTable.addCell(messages.getMessage("text.invoice.view.invoice.quantity"));
+		detailDataTable.addCell(messages.getMessage("text.invoice.view.invoice.total.product"));
 		
 		for (InvoiceItemBean item: invoice.getItems()) {
 			
@@ -77,7 +87,7 @@ public class InvoicePdfView extends AbstractPdfView {
 			
 		}
 		
-		PdfPCell footer = new PdfPCell(new Phrase("Total:"));
+		PdfPCell footer = new PdfPCell(new Phrase(messages.getMessage("text.invoice.view.invoice.total") + ":"));
 		footer.setColspan(3);
 		footer.setHorizontalAlignment(PdfCell.ALIGN_RIGHT);
 		detailDataTable.addCell(footer);
