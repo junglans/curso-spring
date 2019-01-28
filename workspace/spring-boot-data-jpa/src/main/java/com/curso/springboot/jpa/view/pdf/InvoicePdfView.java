@@ -19,7 +19,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-@Component("invoices/detail")
+@Component("invoices/detail.pdf")
 /**
  * AbstractPdfView implementa la interfaz View
  * @author jf.jimenez
