@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
 
  
 
@@ -62,6 +63,7 @@ public class InvoiceBean implements Serializable {
 		this.creationDate = creationDate;
 	}
 
+	@XmlTransient
 	public ClientBean getClient() {
 		return client;
 	}
