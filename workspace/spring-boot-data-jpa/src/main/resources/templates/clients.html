@@ -13,6 +13,8 @@
 			<div class="card-body">
 				<h4>
 					<a sec:authorize="hasRole('ADMIN')" th:href="@{/form}" class="btn btn-primary btn-xs">Crear cliente</a>
+					<a th:href="@{'/clients'(format=csv)}"
+						class="btn btn-success btn-xs float-right">CSV</a>
 				</h4>
 				<table class="table table-striped table-bordered">
 					<thead class="thead-inverse">
