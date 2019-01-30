@@ -8,6 +8,8 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
  
 
 public class InvoiceBean implements Serializable {
@@ -25,9 +27,10 @@ public class InvoiceBean implements Serializable {
 	private String observations;
 
 	private Date creationDate;
-
+	@JsonBackReference
 	private ClientBean client;
 
+	
 	private List<InvoiceItemBean> items;
 
 	public InvoiceBean() {

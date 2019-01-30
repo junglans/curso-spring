@@ -8,8 +8,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class ClientBean implements Serializable {
 
@@ -28,12 +30,14 @@ public class ClientBean implements Serializable {
 	private String email;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date creationDate;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date activationDate;
-	
+	@JsonManagedReference
 	private List<InvoiceBean> invoices;
 	private String photo;
 
