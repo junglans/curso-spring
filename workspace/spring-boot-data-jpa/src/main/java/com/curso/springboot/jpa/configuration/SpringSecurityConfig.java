@@ -68,6 +68,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .antMatchers("/", "/css/**", "/js/**", "/images/**").permitAll() // rutas publicas
 		 .antMatchers("/locale").permitAll()
 		 .antMatchers("/clients").permitAll()
+		 .antMatchers("/api/clients/**").permitAll()
 		 /* todas estas autorizaciones se pueden reemplazar con anotaciones.
 		 .antMatchers("/detail/**").hasAnyRole("USER")
 		 .antMatchers("/uploads/**").hasAnyRole("USER")

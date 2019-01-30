@@ -42,7 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.springboot.jpa.models.bean.ClientBean;
 import com.curso.springboot.jpa.models.dto.ClientDTO;
-import com.curso.springboot.jpa.services.ClientServiceImpl;
+import com.curso.springboot.jpa.services.IClientService;
 import com.curso.springboot.jpa.services.IUploadFileService;
 import com.curso.springboot.jpa.utils.GlobalValues;
 import com.curso.springboot.jpa.utils.MapperUtil;
@@ -55,7 +55,7 @@ public class ClientController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
 
 	@Autowired
-	private ClientServiceImpl clientService;
+	private IClientService clientService;
 	@Autowired
 	private MapperUtil mapper;
 	@Autowired
@@ -91,7 +91,7 @@ public class ClientController {
 		model.addAttribute("client", client);
 		return "detail";
 	}
-
+	
 	@RequestMapping(value = {"/clients"}, method = RequestMethod.GET)
 	public String list(@RequestParam(name = "page", defaultValue = "0") int page, Model model, HttpServletRequest request, Locale locale) {
 
