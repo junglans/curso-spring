@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+<meta charset="UTF-8" />
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+
+				<h4 sec:authorize="hasRole('ADMIN')">
+					<a class="btn btn-primary btn-xs"
+						th:href="@{/invoices/form/} + ${client.id}"
+						th:text="'crear factura'"></a>
+				</h4>
+
+				<img th:if="${client.photo != null}"
+					class="img-thumbnail rouded float-left" style="max-width: 25%"
+					th:src="@{/uploads/} + ${client.photo}" />
+
+				<ul class="list-group">
+					<li class="list-group-item" th:text="${client.name}"></li>
+					<li class="list-group-item" th:text="${client.surname}"></li>
+					<li class="list-group-item" th:text="${client.email}"></li>
+					<li class="list-group-item" th:text="${client.activationDate}"></li>
+				</ul>
+				<div th:if="${#lists.isEmpty(client.invoices) }"
+					class="alert alert-info my-4"
+					th:text="'No hay facturas asignadas para el cliente ' + ${client.name} + ' ' + ${client.surname}"></div>
+				<table th:if="${not #lists.isEmpty(client.invoices) }"
+					class="table table-bordered table-stripped my-4">
+					<thead>
+						<tr>
+							<th>Folio</th>
+							<th>Descripción</th>
+							<th>Fecha</th>
+							<th>Total</th>
+							<th sec:authorize="hasRole('ADMIN')">Ver</th>
+							<th sec:authorize="hasRole('ADMIN')">Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="invoice: ${client.invoices}">
+							<td th:text="${invoice.id}"></td>
+							<td th:text="${invoice.description}"></td>
+							<td th:text="${invoice.creationDate}"></td>
+							<td th:text="${invoice.total}"></td>
+							<td sec:authorize="hasRole('ADMIN')"><a th:href="@{'/invoices/detail/' + ${invoice.id}}" class="btn btn-primary btn-xs" th:text="'Detalle'"></a></td>
+							<td sec:authorize="hasRole('ADMIN')"><a th:href="@{'/invoices/delete/' + ${invoice.id}}" class="btn btn-danger btn-xs" th:text="'Eliminar'" onclick="return confirm('¿Estás seguro que desea eliminar la factura?')"></a></td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
