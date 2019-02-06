@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +24,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 
 import com.curso.springboot.jpa.models.bean.UserBean;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -97,7 +93,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
 		
 		
-		SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+		 
 		Long now = System.currentTimeMillis();
 		
 		Claims claims = Jwts.claims();
@@ -108,7 +104,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		String jwtToken = Jwts.builder()
 							.setSubject( userName )
-							.signWith(key)
+							.signWith(SignatureAlgorithm.HS512, "{Esta.es.mi.clave.de.cifrado-1234567890123456789012345678901234567890}".getBytes())
 							.setIssuedAt(new Date(now))
 							.setExpiration(new Date(now + 4*60*60*1000L) ) // 4 horas
 							.setClaims(claims)

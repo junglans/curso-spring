@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.curso.springboot.jpa.auth.filters.JWTAuthenticationFilter;
+import com.curso.springboot.jpa.auth.filters.JWTAuthorizationFilter;
 import com.curso.springboot.jpa.auth.filters.SimpleFilter;
 import com.curso.springboot.jpa.services.JpaUserDetailsService;
 
@@ -82,11 +83,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			 .and() 
 		 */
 		 .and()
-		 .addFilterBefore(new SimpleFilter(new AntPathRequestMatcher("/api/login")), JWTAuthenticationFilter.class)
+		 .addFilterAfter(new SimpleFilter(new AntPathRequestMatcher("/api/login")), JWTAuthorizationFilter.class)
 		 .addFilter(new JWTAuthenticationFilter(authenticationManager(), new AntPathRequestMatcher("/api/login", "POST")))
+		 .addFilterAfter(new JWTAuthorizationFilter(authenticationManager()), JWTAuthenticationFilter.class)
 		 
 		 .csrf().disable()
-		 // deshabilitamos el uso de sesiones porque vamos a usar JSON Web Token
+		 // deshabilitamos el uso de sesiones porque vamos a usar JSON Web Token.
 		 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		 
 	}

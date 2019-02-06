@@ -1,6 +1,7 @@
 package com.curso.springboot.jpa.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ public class ClientRestController {
 	private IClientService clientService;
 	
 	@RequestMapping(value = {"/list"}, method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
 	public ClientList list() {
 		return new ClientList(mapper.map(clientService.findAll(), ClientBean.class));
 	}
