@@ -19,6 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.curso.springboot.jpa.models.dao.IUserDAO;
 import com.curso.springboot.jpa.models.entity.UserEntity;
 @Service("jpaUserDetailsService")
+/**
+ * Esta clase es la que se va a pasar al AuthenticationManagerBuilder para que recupere la información
+ * del usuario (UserDetails)
+ * @author jf.jimenez
+ *
+ */
 public class JpaUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JpaUserDetailsService.class);
@@ -28,7 +34,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 	@Override
 	@Transactional(readOnly=true, propagation = Propagation.REQUIRED)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 
+		// Leemos el usuario desde la base de datos.
 		UserEntity user = userDAO.findByUsername(username);
 		if (user == null) {
 			LOGGER.error("Error en login: No existe el usuario '" + username + "'");
@@ -44,6 +50,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 			LOGGER.error("Error en login: El usuario '" + username + "' no tiene roles asignados.");
 			throw new UsernameNotFoundException("Error en login: El usuario '" + username + "' no tiene roles asignados.");
 		}
+		// Devolvemos el UserDetails de Spring
 		User userDetails = new User(user.getUsername(),user.getPassword(),user.getEnabled(),true, true, true, authorities);
 		return userDetails;
 	}

@@ -68,6 +68,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		username = username.trim(); 
 		//Este token no es el token de JWT 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+		// Aquí se verifica el login
 		return authManager.authenticate(authToken);
 	}
 

@@ -41,7 +41,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		boolean validToken = false;
 		Claims token = null;
 		try {
-	 
+			// Recuperamos la información almacenada en el jwt que se obtuvo en el login
 			token = Jwts.parser()
 					.setSigningKey("{Esta.es.mi.clave.de.cifrado-1234567890123456789012345678901234567890}".getBytes())
 					.parseClaimsJws(request.getHeader("Authorization").replaceAll("Bearer ", ""))

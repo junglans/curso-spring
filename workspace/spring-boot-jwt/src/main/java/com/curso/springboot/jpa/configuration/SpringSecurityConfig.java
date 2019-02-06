@@ -84,6 +84,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 */
 		 .and()
 		 .addFilterAfter(new SimpleFilter(new AntPathRequestMatcher("/api/login")), JWTAuthorizationFilter.class)
+		 // Al filtro se le pasa el AuthenticationManager.
 		 .addFilter(new JWTAuthenticationFilter(authenticationManager(), new AntPathRequestMatcher("/api/login", "POST")))
 		 .addFilterAfter(new JWTAuthorizationFilter(authenticationManager()), JWTAuthenticationFilter.class)
 		 
