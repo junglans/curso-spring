@@ -3,10 +3,10 @@ package com.curso.springboot.jpa.auth;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class SimpleGrantedAuthoritiesMixIn {
+public abstract class SimpleGrantedAuthorityMixIn {
 
 	@JsonCreator
-	public SimpleGrantedAuthoritiesMixIn(@JsonProperty("authority") String role) {
+	public SimpleGrantedAuthorityMixIn(@JsonProperty("authority") String role) {
 		super();
 	}
 

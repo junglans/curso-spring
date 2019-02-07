@@ -1,8 +1,6 @@
 package com.curso.springboot.jpa.auth.filters;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,26 +15,23 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 
+import com.curso.springboot.jpa.auth.service.JWTService;
 import com.curso.springboot.jpa.models.bean.UserBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authManager;
-	
-	public JWTAuthenticationFilter(AuthenticationManager authManager, AntPathRequestMatcher pathMatcher) {
+	private JWTService jwtService;
+	public JWTAuthenticationFilter(AuthenticationManager authManager, JWTService jwtService, AntPathRequestMatcher pathMatcher) {
 		super();
 		this.authManager = authManager;
+		this.jwtService = jwtService;
 		// Reemplazamos url la página de login que está por defecto "AntPathRequestMatcher("/login", "POST")" por la nuestra.
 		if (pathMatcher != null) {
 			setRequiresAuthenticationRequestMatcher(pathMatcher);
@@ -90,36 +85,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		
-		String userName = ((User)authResult.getPrincipal()).getUsername();
-		Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
-		
-		
-		 
-		Long now = System.currentTimeMillis();
-		
-		Claims claims = Jwts.claims();
-		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-		claims.put("sub", userName);
-		claims.put("iat", new Date(now));
-		claims.put("exp", new Date(now + 4*60*60*1000L));
-		
-		String jwtToken = Jwts.builder()
-							.setSubject( userName )
-							.signWith(SignatureAlgorithm.HS512, "{Esta.es.mi.clave.de.cifrado-1234567890123456789012345678901234567890}".getBytes())
-							.setIssuedAt(new Date(now))
-							.setExpiration(new Date(now + 4*60*60*1000L) ) // 4 horas
-							.setClaims(claims)
-							.compact();
-		
+		String jwtToken = jwtService.create(authResult);
 		// Generamos los encabezados...
-		response.addHeader("Authorization", "Bearer " + jwtToken);
+		response.addHeader(JWTService.HEADER_STRING, JWTService.TOKEN_PREFIX + jwtToken);
 		response.addHeader("Content-Type", "application/json; charset=UTF-8"); // O bien con response.setContentType()
 		
 		// Contruimos el body que vamos a mandar
 		Map<String, Object> body = new HashMap<>();
 		body.put("token", jwtToken);
 		body.put("user", (User)authResult.getPrincipal());
-		body.put("message", String.format("¡Hola %s, has iniciado sesión con éxito!", userName));
+		body.put("message", String.format("¡Hola %s, has iniciado sesión con éxito!", jwtService.getUserName(jwtToken)));
 		// Escribimos el cuerpo de la respuesta.
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		// Indicamos el OK de la petición Http

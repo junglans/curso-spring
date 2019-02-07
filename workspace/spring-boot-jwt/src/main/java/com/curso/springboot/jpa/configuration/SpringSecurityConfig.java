@@ -13,6 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.curso.springboot.jpa.auth.filters.JWTAuthenticationFilter;
 import com.curso.springboot.jpa.auth.filters.JWTAuthorizationFilter;
 import com.curso.springboot.jpa.auth.filters.SimpleFilter;
+import com.curso.springboot.jpa.auth.service.JWTService;
 import com.curso.springboot.jpa.services.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -28,6 +29,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JWTService jwtService;
 	
 	/**
 	 * Note that the AuthenticationManagerBuilder is @Autowired into a method in a @Bean - 
@@ -85,8 +89,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		 .and()
 		 .addFilterAfter(new SimpleFilter(new AntPathRequestMatcher("/api/login")), JWTAuthorizationFilter.class)
 		 // Al filtro se le pasa el AuthenticationManager.
-		 .addFilter(new JWTAuthenticationFilter(authenticationManager(), new AntPathRequestMatcher("/api/login", "POST")))
-		 .addFilterAfter(new JWTAuthorizationFilter(authenticationManager()), JWTAuthenticationFilter.class)
+		 .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtService, new AntPathRequestMatcher("/api/login", "POST")))
+		 .addFilterAfter(new JWTAuthorizationFilter(authenticationManager(), jwtService), JWTAuthenticationFilter.class)
 		 
 		 .csrf().disable()
 		 // deshabilitamos el uso de sesiones porque vamos a usar JSON Web Token.
