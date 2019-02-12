@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" sec:authorize="hasRole('ADMIN')">
+<head th:replace="layout/layout :: head">
+<meta charset="UTF-8" />
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+				<h6>
+					<a th:text="'&laquo; Volver'" th:href="@{'/detail/' + ${invoice.client.id}}"></a>
+				</h6>
+				<table th:replace="invoices/template/template_items :: invoiceItems"></table>
+				<form th:action="@{/invoices/form}" th:object="${invoice}"
+					method="post">
+					<div class="form-group row">
+						<label for="cliente" class="col-sm-2 col-form-label"
+							th:text="'Cliente'"></label>
+						<input type="hidden" name="clientId" th:field="*{client.id}" value="${invoice.client.id}"/>
+						<div class="col-sm-6">
+							<input name="cliente"
+								th:value="${invoice.client.name} + ' ' + ${invoice.client.surname}"
+								class="form-control" disabled='disabled' />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="description" class="col-sm-2 col-form-label" th:text="Descripción"></label>
+						<div class="col-sm-6"> 
+							<input type="text" th:field="*{description}" class="form-control" th:errorclass="'form-control is-invalid'"/>
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="observations" class="col-sm-2 col-form-label" th:text="Observaciones"></label>
+						<div class="col-sm-6">
+							<textarea th:field="*{observations}" class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="search_product" class="col-sm-2 col-form-label" th:text="'Buscar Producto'"></label>
+						<div class="col-sm-6">
+							<input type="text" name="search_product" id="search_product" class="form-control" />
+						</div>
+					</div>
+					
+					
+					<table id="loadProductItems" class="table table-sm table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Nombre</th>
+								<th>Precio</th>
+								<th>Cantidad</th>
+								<th>Total</th>
+								<th>Eliminar</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<h5><span class="badge badge-secondary" id="invoiceTotal">0</span></h5>
+					<div class="form-group row">
+						<div class="col-sm-2">
+							<input type="submit" th:value="${title}"
+								class="btn btn-secondary" />
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="invoices/template/autocomplete_product :: javascript"></script>
+</body>
+</html>
