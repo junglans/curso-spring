@@ -1,3 +1,4 @@
 /workspace/.metadata/**
 /workspace/.metadata/.plugins/**
 /workspace/.recommenders/**
+/angular/clients-app/node_modules/**
