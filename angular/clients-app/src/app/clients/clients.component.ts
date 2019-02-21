@@ -14,9 +14,8 @@ export class ClientsComponent implements OnInit {
 
   ngOnInit() {
     this.clientService.getAllClients().subscribe( (response: Array<Client>) => {
-      //console.log(JSON.stringify(response));
       this.clients = response;
-    });
+    }, (err) => console.log("Se ha producido un error :" + JSON.stringify(err.message)));
   }
 
 }

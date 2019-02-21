@@ -10,7 +10,8 @@ import { DirectiveComponent } from './directive/directive.component';
 import { ClientsComponent } from './clients/clients.component';
 import { ClientService } from './services/client.service';
 import { RouterModule, Routes} from '@angular/router'
-
+import { HttpClientModule } from '@angular/common/http'
+import { BaseService } from "./services/base.service";
 const routes: Routes = [
   {path: '', redirectTo: '/clients', pathMatch: 'full'},
   {path: 'clients', component: ClientsComponent },
@@ -28,9 +29,10 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [ClientService],
+  providers: [ClientService, BaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
