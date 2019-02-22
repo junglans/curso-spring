@@ -6,7 +6,7 @@ import { BaseService } from "./base.service";
 @Injectable()
 export class ClientService   {
 
-  private urlList:string = "http://localhost:8080/api/client/list";
+  private urlList:string = "http://localhost:8080/api/client";
   constructor(private service: BaseService) {}
 
   public getAllClients(): Observable<Array<Client>> {

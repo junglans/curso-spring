@@ -19,9 +19,25 @@ public class ClientServiceImpl implements IClientService {
 	@Override
 	@Transactional(readOnly= true)
 	public List<ClientEntity> findAll() throws Exception {
-		 
 		return (List<ClientEntity>) dao.findAll();
 	}
-
 	
+	@Override
+	@Transactional(readOnly= true)
+	public ClientEntity findById(Long id) throws Exception {
+		return dao.findById(id).get();
+	}
+
+	@Override
+	@Transactional
+	public ClientEntity save(ClientEntity client) throws Exception {
+		return dao.save(client);
+	}
+
+	@Override
+	@Transactional
+	public void delete(ClientEntity entity) throws Exception {
+		dao.delete(entity);
+	}
+
 }
