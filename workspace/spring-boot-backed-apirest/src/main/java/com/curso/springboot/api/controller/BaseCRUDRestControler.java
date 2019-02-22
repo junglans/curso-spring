@@ -48,6 +48,7 @@ public abstract class BaseCRUDRestControler<E> {
 		E updated = service.save(current);
 
 		return new ResponseEntity<E>(updated, HttpStatus.OK);
+		 
 	}
 
 }

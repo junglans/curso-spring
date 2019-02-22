@@ -8,7 +8,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -28,9 +27,6 @@ public class RestControllerAroundAspect {
 			
 		} catch (DataAccessException e) {
 			
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Content-Type", "application/json");
-			
 			Map<String, Object> response = new HashMap<>();
 			response.put("message", "Error al eliminar el entidad en la base de datos");
 			response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
@@ -39,20 +35,14 @@ public class RestControllerAroundAspect {
 
 		}  catch (NoSuchElementException e) {
 			
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Content-Type", "application/json");
-			
 			Map<String, Object> response = new HashMap<>();
 			response.put("message", "La entidad no existe en la base de datos");
 			response.put("error", "Entity not found");
 			response.put("status", HttpStatus.NOT_FOUND);
-			return new ResponseEntity<>(response, headers, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			
 		} catch (Throwable e) {
-			
-			HttpHeaders headers = new HttpHeaders();
-			headers.set("Content-Type", "application/json");
-			
+
 			Map<String, Object> response = new HashMap<>();
 			response.put("message", "Error al eliminar el entidad en la base de datos");
 			response.put("error", e.getMessage());
