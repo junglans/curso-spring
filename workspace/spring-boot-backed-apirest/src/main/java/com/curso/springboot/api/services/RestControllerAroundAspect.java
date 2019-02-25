@@ -28,7 +28,7 @@ public class RestControllerAroundAspect {
 		} catch (DataAccessException e) {
 			
 			Map<String, Object> response = new HashMap<>();
-			response.put("message", "Error al eliminar el entidad en la base de datos");
+			response.put("message", "Error en la base de datos");
 			response.put("error", e.getMessage() + ": " + e.getMostSpecificCause().getMessage());
 			response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,7 +44,7 @@ public class RestControllerAroundAspect {
 		} catch (Throwable e) {
 
 			Map<String, Object> response = new HashMap<>();
-			response.put("message", "Error al eliminar el entidad en la base de datos");
+			response.put("message", "Error en la base de datos");
 			response.put("error", e.getMessage());
 			response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);

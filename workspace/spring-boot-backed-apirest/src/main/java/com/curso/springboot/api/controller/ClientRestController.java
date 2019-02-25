@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.curso.springboot.api.dao.FilterBy;
 import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.services.IClientService;
 
@@ -22,10 +23,13 @@ public class ClientRestController extends BaseCRUDRestControler<ClientEntity> {
 	public ClientRestController(@Autowired IClientService service) {
 		super(service);
 	}
-
-	@RequestMapping(value="/client", method=RequestMethod.GET)
+	@RequestMapping(value="/client/list", method=RequestMethod.GET)
 	public ResponseEntity<?> findAll() throws Exception {
 		return super.findAll();
+	}
+	@RequestMapping(value="/client/list", method=RequestMethod.POST)
+	public ResponseEntity<?> findAll(@RequestBody FilterBy...filter) throws Exception {
+		return super.findAll(filter);
 	}
 	
 	@RequestMapping(value="/client/{id}", method=RequestMethod.GET)

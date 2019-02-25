@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.curso.springboot.api.dao.FilterBy;
 import com.curso.springboot.api.services.IBaseCRUDService;
 
 public abstract class BaseCRUDRestControler<E> {
@@ -19,7 +20,11 @@ public abstract class BaseCRUDRestControler<E> {
 	}
 
 	public ResponseEntity<?> findAll() throws Exception {
-		return new ResponseEntity<List<E>>(service.findAll(),  HttpStatus.OK);
+		return new ResponseEntity<List<E>>(service.findAll(), HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> findAll(FilterBy...filter) throws Exception {
+		return new ResponseEntity<List<E>>(service.findAll(filter), HttpStatus.OK);
 	}
 
 	public ResponseEntity<?> get(Long id) throws Exception {
@@ -38,7 +43,7 @@ public abstract class BaseCRUDRestControler<E> {
 		response.put("mensaje", "Entidad eliminada correctamente.");
 		response.put("status", HttpStatus.NO_CONTENT);
 
-		return new ResponseEntity<Map<String, Object>>(response,  HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NO_CONTENT);
 	}
 
 	public ResponseEntity<?> update(E entity, Long id, BiConsumer<E, E> fn) throws Exception {
@@ -48,7 +53,7 @@ public abstract class BaseCRUDRestControler<E> {
 		E updated = service.save(current);
 
 		return new ResponseEntity<E>(updated, HttpStatus.OK);
-		 
+
 	}
 
 }

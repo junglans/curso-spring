@@ -13,13 +13,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-@Table(name = "CLIENTS")
+@Table(name = "NEWCLIENTS")
 public class ClientEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2952511651078541013L;
 
 	@Id
@@ -36,11 +35,13 @@ public class ClientEntity implements Serializable {
 	private String email;
 
 	@Column(name = "creation_date", insertable = true, updatable = false, nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private Date creationDate;
 
 	@Column(name = "activation_date", insertable = true, updatable = true, nullable = true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private Date activationDate;
 
 	@Column(name = "photo", insertable = true, updatable = true, nullable = true)
