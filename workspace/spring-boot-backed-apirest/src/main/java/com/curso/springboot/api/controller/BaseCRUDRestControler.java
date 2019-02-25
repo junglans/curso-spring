@@ -36,9 +36,9 @@ public abstract class BaseCRUDRestControler<E> {
 
 		Map<String, Object> response = new HashMap<>();
 		response.put("mensaje", "Entidad eliminada correctamente.");
-		response.put("status", HttpStatus.OK);
+		response.put("status", HttpStatus.NO_CONTENT);
 
-		return new ResponseEntity<Map<String, Object>>(response,  HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response,  HttpStatus.NO_CONTENT);
 	}
 
 	public ResponseEntity<?> update(E entity, Long id, BiConsumer<E, E> fn) throws Exception {

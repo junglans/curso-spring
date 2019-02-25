@@ -26,6 +26,7 @@
     "popper.js": "^1.14.7",
     "rxjs": "~6.3.3",
     "stompjs": "^2.3.3",
+    "sweetalert2": "^8.2.4",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

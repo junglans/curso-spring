@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Client } from '../clients/client';
 import { Observable } from 'rxjs';
 import { BaseService } from "./base.service";
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ClientService   {
 
   private urlList:string = "http://localhost:8080/api/client";
+  private urlNew:string = "http://localhost:8080/api/client";
   constructor(private service: BaseService) {}
 
   public getAllClients(): Observable<Array<Client>> {
@@ -31,5 +33,9 @@ export class ClientService   {
 
       return of(clients);
       */
+  }
+
+  public create(client: Client): Observable<Client> {
+    return this.service.executeRequest<Client>("POST", this.urlNew, client, {headers: new HttpHeaders({'Content-Type':'application/json'})});
   }
 }
