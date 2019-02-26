@@ -1,8 +1,5 @@
 package com.curso.springboot.api.dao;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-
 public class FilterBy {
 
 	private String attrName;
@@ -29,13 +26,8 @@ public class FilterBy {
 		this.attrName = attrName;
 	}
 
-	public Object getAttrValue() throws Exception {
-		if ("date".equals(this.attrType)) {
-			SimpleDateFormat sdf = new SimpleDateFormat(this.attrFormat);
-			return new Timestamp(sdf.parse(attrValue).getTime());
-		} else {
-			return attrValue;
-		}
+	public String getAttrValue() throws Exception {
+		return this.attrValue;
 	}
 
 	public void setAttrValue(String attrValue) {

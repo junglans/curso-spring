@@ -16,37 +16,40 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 @Repository
 public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslPredicateExecutor<ClientEntity> {
 
-	default List<ClientEntity> findAll(FilterBy...filters) throws Exception {
-		
+	default List<ClientEntity> findAll(FilterBy... filters) throws Exception {
+
 		QClientEntity qclient = QClientEntity.clientEntity;
 
 		BooleanExpression finalPredicate = null;
-		for (FilterBy filter: filters) {
-			
+		for (FilterBy filter : filters) {
+
 			Field filterField = null;
 			for (Field field : qclient.getClass().getDeclaredFields()) {
 				if (field.getName().equals(filter.getAttrName())) {
 					filterField = field;
 				}
 			}
-			
-			Object sp = ((Object)filterField.get(qclient));
-					
+
+			Object sp = ((Object) filterField.get(qclient));
+
 			Method method = null;
-			for (Method m: sp.getClass().getMethods()) {
-				if (m.getName().equals(filter.getAttrOperation()) && m.getParameterTypes()[0].equals(Object.class)   ) {
+			for (Method m : sp.getClass().getMethods()) {
+				// System.out.println(m.getName());
+				if (m.getName().equals(filter.getAttrOperation())
+						&& (m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
+								|| m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
 					method = m;
 				}
 			}
-			 		
-			BooleanExpression predicate = (BooleanExpression)method.invoke(sp, filter.getAttrValue());
-			finalPredicate = (finalPredicate == null)? predicate: finalPredicate.and(predicate);
+
+			ExpressionBuilder<?> builder = ExpressionBuilderFactory.getBuilder(filter);
+			Object val = builder.build(filter);
 			
+			BooleanExpression predicate = (BooleanExpression) method.invoke(sp, val);
+			finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
+
 		}
-	
-		 
+
 		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
-		 
-		 
 	}
 }

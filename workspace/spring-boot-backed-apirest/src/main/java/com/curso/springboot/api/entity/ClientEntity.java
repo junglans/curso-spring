@@ -36,12 +36,12 @@ public class ClientEntity implements Serializable {
 
 	@Column(name = "creation_date", insertable = true, updatable = false, nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss Z")
 	private Date creationDate;
 
 	@Column(name = "activation_date", insertable = true, updatable = true, nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss Z")
 	private Date activationDate;
 
 	@Column(name = "photo", insertable = true, updatable = true, nullable = true)
