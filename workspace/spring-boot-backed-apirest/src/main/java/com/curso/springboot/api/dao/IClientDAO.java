@@ -27,6 +27,7 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 			for (Field field : qclient.getClass().getDeclaredFields()) {
 				if (field.getName().equals(filter.getAttrName())) {
 					filterField = field;
+					break;
 				}
 			}
 
@@ -34,21 +35,45 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 
 			Method method = null;
 			for (Method m : sp.getClass().getMethods()) {
-				if (m.getName().equals(filter.getAttrOperation())
-						&& (m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
+//				System.out.println(m.getName());
+				if (m.getName().equals(filter.getAttrOperation())) {
+					switch (m.getParameterTypes().length) {
+					case 1:
+						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
 								|| m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
-					method = m;
+							method = m;
+						}
+						break;
+					case 2:
+						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
+								&& m.getParameterTypes()[1].equals(com.querydsl.core.types.Expression.class))) {
+							method = m;
+						}
+						break;
+					default:
+						throw new Exception("Wrong number of parameters :" + m.getParameterTypes().length);
+					}
+				}
+				if (method != null) {
+					break;
 				}
 			}
 
 			Builder<?> builder = ExpressionBuilderFactory.getBuilder(filter);
 			Object val = builder.build(filter);
-			
-			BooleanExpression predicate = (BooleanExpression) method.invoke(sp, val);
-			finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
-
+			BooleanExpression predicate = null;
+			switch (method.getParameterTypes().length) {
+			case 1:
+				predicate = (BooleanExpression) method.invoke(sp, val);
+				finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
+				break;
+			case 2:
+				Object[] values = (Object[]) val;
+				predicate = (BooleanExpression) method.invoke(sp, values[0], values[1]);
+				finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
+				break;
+			}
 		}
-
 		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
 	}
 }
