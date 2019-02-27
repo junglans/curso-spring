@@ -3,7 +3,7 @@ package com.curso.springboot.api.dao;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 
-public class StringListExpressionBuilder implements ExpressionBuilder<Expression<String>[]>{
+public class StringListExpressionBuilder implements CollectionExpressionBuilder<String>{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -13,7 +13,8 @@ public class StringListExpressionBuilder implements ExpressionBuilder<Expression
 		for (int i = 0; i<values.length; i++ ) {
 			expressions[i] = Expressions.asString(values[i].trim());
 		}
-		return (Expression<String>[])expressions ;
+		return (Expression<String>[])expressions;
 	}
+
 
 }

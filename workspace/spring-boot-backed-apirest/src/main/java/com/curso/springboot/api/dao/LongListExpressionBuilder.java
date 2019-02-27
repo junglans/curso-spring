@@ -3,7 +3,7 @@ package com.curso.springboot.api.dao;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 
-public class LongListExpressionBuilder implements ExpressionBuilder<Expression<Long>[]>{
+public class LongListExpressionBuilder implements CollectionExpressionBuilder<Long>{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -13,7 +13,6 @@ public class LongListExpressionBuilder implements ExpressionBuilder<Expression<L
 		for (int i = 0; i<values.length; i++ ) {
 			expressions[i] = Expressions.asNumber(Long.parseLong(values[i].trim()));
 		}
-		return (Expression<Long>[])expressions ;
+		return (Expression<Long>[])expressions;
 	}
-
 }

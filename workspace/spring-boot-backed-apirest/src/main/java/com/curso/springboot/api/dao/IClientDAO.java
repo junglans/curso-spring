@@ -34,7 +34,6 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 
 			Method method = null;
 			for (Method m : sp.getClass().getMethods()) {
-				// System.out.println(m.getName());
 				if (m.getName().equals(filter.getAttrOperation())
 						&& (m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
 								|| m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
@@ -42,7 +41,7 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 				}
 			}
 
-			ExpressionBuilder<?> builder = ExpressionBuilderFactory.getBuilder(filter);
+			Builder<?> builder = ExpressionBuilderFactory.getBuilder(filter);
 			Object val = builder.build(filter);
 			
 			BooleanExpression predicate = (BooleanExpression) method.invoke(sp, val);
