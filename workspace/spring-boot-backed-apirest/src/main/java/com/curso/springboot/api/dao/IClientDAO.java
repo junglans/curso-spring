@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import com.curso.springboot.api.builders.Builder;
+import com.curso.springboot.api.builders.ExpressionBuilderFactory;
 import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.entity.QClientEntity;
 import com.curso.springboot.api.utils.CollectionUtils;
@@ -38,13 +40,13 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 //				System.out.println(m.getName());
 				if (m.getName().equals(filter.getAttrOperation())) {
 					switch (m.getParameterTypes().length) {
-					case 1:
+					case 1: // eq, ne, ge, gt, in, not in
 						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
 								|| m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
 							method = m;
 						}
 						break;
-					case 2:
+					case 2: // between
 						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
 								&& m.getParameterTypes()[1].equals(com.querydsl.core.types.Expression.class))) {
 							method = m;

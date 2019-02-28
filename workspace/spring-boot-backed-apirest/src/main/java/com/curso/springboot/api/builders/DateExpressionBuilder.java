@@ -1,8 +1,9 @@
-package com.curso.springboot.api.dao;
+package com.curso.springboot.api.builders;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.curso.springboot.api.dao.FilterBy;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 

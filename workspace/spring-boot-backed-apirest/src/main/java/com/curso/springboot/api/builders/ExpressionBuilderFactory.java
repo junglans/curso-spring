@@ -1,6 +1,8 @@
-package com.curso.springboot.api.dao;
+package com.curso.springboot.api.builders;
 
 import org.apache.commons.text.CaseUtils;
+
+import com.curso.springboot.api.dao.FilterBy;
 
 public class ExpressionBuilderFactory {
 

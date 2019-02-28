@@ -1,5 +1,6 @@
-package com.curso.springboot.api.dao;
+package com.curso.springboot.api.builders;
 
+import com.curso.springboot.api.dao.FilterBy;
 import com.querydsl.core.types.Expression;
 
 public interface CollectionExpressionBuilder<E> extends Builder<Expression<E>[]>{
