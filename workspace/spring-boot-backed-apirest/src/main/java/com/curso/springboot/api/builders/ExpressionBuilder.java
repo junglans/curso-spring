@@ -1,9 +1,10 @@
 package com.curso.springboot.api.builders;
 
 import com.curso.springboot.api.dao.FilterBy;
-import com.querydsl.core.types.Expression;
 
-public interface ExpressionBuilder<E> extends Builder<Expression<E>>{
-	Expression<E> build(FilterBy filter) throws Exception;
-
+public abstract class ExpressionBuilder<E> implements Builder  {
+	public E build(FilterBy filter) throws Exception {
+		return operation(filter);
+	}
+	protected abstract E operation(FilterBy filter);
 }

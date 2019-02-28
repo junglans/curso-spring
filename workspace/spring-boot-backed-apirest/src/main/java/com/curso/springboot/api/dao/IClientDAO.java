@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
-import com.curso.springboot.api.builders.Builder;
+import com.curso.springboot.api.builders.ExpressionBuilder;
 import com.curso.springboot.api.builders.ExpressionBuilderFactory;
 import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.entity.QClientEntity;
@@ -41,14 +41,14 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 				if (m.getName().equals(filter.getAttrOperation())) {
 					switch (m.getParameterTypes().length) {
 					case 1: // eq, ne, ge, gt, in, not in
-						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
-								|| m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
+						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class) || 
+							 m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression[].class))) {
 							method = m;
 						}
 						break;
 					case 2: // between
-						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class)
-								&& m.getParameterTypes()[1].equals(com.querydsl.core.types.Expression.class))) {
+						if ((m.getParameterTypes()[0].equals(com.querydsl.core.types.Expression.class) && 
+							 m.getParameterTypes()[1].equals(com.querydsl.core.types.Expression.class))) {
 							method = m;
 						}
 						break;
@@ -61,7 +61,8 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 				}
 			}
 
-			Builder<?> builder = ExpressionBuilderFactory.getBuilder(filter);
+			ExpressionBuilder<?> builder = ExpressionBuilderFactory.getExpressionBuilder(filter);
+			// Aqui el resultado de la llmada es un objeto de tipo Expression o Expression[]
 			Object val = builder.build(filter);
 			BooleanExpression predicate = null;
 			switch (method.getParameterTypes().length) {
