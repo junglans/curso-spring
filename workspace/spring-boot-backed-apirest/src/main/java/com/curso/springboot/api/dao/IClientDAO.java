@@ -2,6 +2,7 @@ package com.curso.springboot.api.dao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,7 @@ import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.entity.QClientEntity;
 import com.curso.springboot.api.utils.CollectionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
@@ -27,19 +29,7 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 		BooleanExpression finalPredicate = null;
 		for (FilterBy filter : filters) {
 
-			// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del
-			// campo que viene en el filtro.
-			// El nombre del campo puede ser una lista de nombres separada por ".".
-			Field filterField = qclient.getClass().getField(filter.getAttrName()[0]);;
-			Object fieldPath = ((Object) filterField.get(qclient));
-			if (fieldPath.getClass().isAssignableFrom(ListPath.class)) {
-				 
-				SimpleExpression<?> qentity = ((ListPath<?, ?>) fieldPath).any();
-				filterField = qentity.getClass().getField(filter.getAttrName()[1]);
-				fieldPath = ((Object) filterField.get(qentity));
-				System.out.println("");
-				
-			}
+			Object fieldPath = getFieldPath(filter.getAttrName(), qclient);
 			// Recuperamos el método que implementa la operación indicada en el filtro. Nos
 			// interesan los métodos que tienen
 			// parámetros de tipo Expression<?>.
@@ -63,6 +53,28 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 		}
 
 		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+	}
+
+	default Object getFieldPath(String[] attrName, EntityPathBase<?> entityPathBase) throws Exception {
+		// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del
+		// campo que viene en el filtro.
+		// El nombre del campo puede ser una lista de nombres separada por ".".
+		
+		// Buscamos el primer nivel
+		Field filterField = entityPathBase.getClass().getField(attrName[0]);
+		
+		Object fieldPath = ((Object) filterField.get(entityPathBase));
+		if (fieldPath.getClass().isAssignableFrom(ListPath.class)) {
+
+			SimpleExpression<?> qentity = ((ListPath<?, ?>) fieldPath).any();
+			
+			fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length), (EntityPathBase<?>)qentity);
+//			filterField = qentity.getClass().getField(attrName[1]);
+//			fieldPath = ((Object) filterField.get(qentity));
+
+		}
+		
+		return fieldPath;
 	}
 
 	default Method getMethod(FilterBy filter, Object fieldPath) throws Exception {
