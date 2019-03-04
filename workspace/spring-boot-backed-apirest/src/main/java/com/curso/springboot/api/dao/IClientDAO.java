@@ -59,21 +59,22 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 		// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del
 		// campo que viene en el filtro.
 		// El nombre del campo puede ser una lista de nombres separada por ".".
-		
+
 		// Buscamos el primer nivel
 		Field filterField = entityPathBase.getClass().getField(attrName[0]);
-		
+
 		Object fieldPath = ((Object) filterField.get(entityPathBase));
-		if (fieldPath.getClass().isAssignableFrom(ListPath.class)) {
+		if (attrName.length > 1) {
+			if (fieldPath.getClass().isAssignableFrom(ListPath.class)) {
 
-			SimpleExpression<?> qentity = ((ListPath<?, ?>) fieldPath).any();
-			
-			fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length), (EntityPathBase<?>)qentity);
-//			filterField = qentity.getClass().getField(attrName[1]);
-//			fieldPath = ((Object) filterField.get(qentity));
+				SimpleExpression<?> qentity = ((ListPath<?, ?>) fieldPath).any();
+				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length), (EntityPathBase<?>) qentity);
 
+			} else {
+				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length),
+						(EntityPathBase<?>) fieldPath);
+			}
 		}
-		
 		return fieldPath;
 	}
 

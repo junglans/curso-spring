@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -59,6 +60,9 @@ public class ClientEntity implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
 	private List<BankAccountEntity> bankAccounts;
+	
+	@ManyToOne(optional = false)
+	private CountryEntity country;
 	
 	@PrePersist
 	public void prePersist() {
@@ -136,6 +140,14 @@ public class ClientEntity implements Serializable {
 
 	public void setBankAccounts(List<BankAccountEntity> bankAccounts) {
 		this.bankAccounts = bankAccounts;
+	}
+
+	public CountryEntity getCountry() {
+		return country;
+	}
+
+	public void setCountry(CountryEntity country) {
+		this.country = country;
 	}
 
 	@Override

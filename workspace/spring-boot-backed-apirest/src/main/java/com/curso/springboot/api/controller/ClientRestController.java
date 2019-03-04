@@ -52,6 +52,7 @@ public class ClientRestController extends BaseCRUDRestControler<ClientEntity> {
 		 		current.setName(client.getName());
 		 		current.setEmail(client.getEmail());
 		 		current.setSurname(client.getSurname());
+		 		current.setCountry(entity.getCountry());
 		 		List<BankAccountEntity> accounts = current.getBankAccounts();
 		 		accounts.clear();
 		 		accounts.addAll(client.getBankAccounts());
