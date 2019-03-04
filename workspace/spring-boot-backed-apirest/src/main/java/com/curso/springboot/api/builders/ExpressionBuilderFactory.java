@@ -22,10 +22,36 @@ public class ExpressionBuilderFactory {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public static final ExpressionBuilder<?> getExpressionBuilder(FilterBy filter) throws Exception {
+	/**
+	 * 
+	 * @param filter
+	 * @param operation la operación lógica que se ejecutará como parte de una claúsula where.
+	 * @return
+	 * @throws Exception
+	 */
+	public static final ExpressionBuilder<?> getExpressionBuilder(FilterBy filter, Method operation) throws Exception {
 		// Decidimos en función de la operation: eq, ne, in, between...
-		return asBetweenExpression(filter);
+		Class<?> params[] = operation.getParameterTypes();
+		// Verificamos que todos los tipos sean un Expression.
+		for (Class<?> clazz : params) {
+			if (!(clazz.isAssignableFrom(Expression.class) || clazz.isAssignableFrom(Expression[].class))) {
+				throw new Exception("Tipo de parámetro no es un Expression<?>");
+			}
+		}
+		switch(params.length) {
+		case 1:
+			if (params[0].isAssignableFrom(Expression[].class)) {
+				return asArrayExpression(filter);
+			} else {
+				return asExpression(filter);
+			}
+		case 2:
+			return asBetweenExpression(filter);
+		default:
+			//TODO: Hay que implementar un tipo de excepción específico.
+			throw new Exception("Número de parámetros erróneo.");
+		}
+		
 	}
 
 	private static ExpressionBuilder<Expression<?>> asExpression(FilterBy filter) throws Exception {

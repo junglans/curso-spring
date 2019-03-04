@@ -25,18 +25,14 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 		BooleanExpression finalPredicate = null;
 		for (FilterBy filter : filters) {
 
-			Field filterField = null;
-			for (Field field : qclient.getClass().getDeclaredFields()) {
-				if (field.getName().equals(filter.getAttrName())) {
-					filterField = field;
-					break;
-				}
-			}
+			// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del campo que viene en el filtro.
+			Field filterField = qclient.getClass().getField(filter.getAttrName());
+			Object fieldPath = ((Object) filterField.get(qclient));
 
-			Object sp = ((Object) filterField.get(qclient));
-
+			// Recuperamos el método que implementa la operación indicada en el filtro. Nos interesan los métodos que tienen
+			// parámetros de tipo Expression<?>.
 			Method method = null;
-			for (Method m : sp.getClass().getMethods()) {
+			for (Method m : fieldPath.getClass().getMethods()) {
 //				System.out.println(m.getName());
 				if (m.getName().equals(filter.getAttrOperation())) {
 					switch (m.getParameterTypes().length) {
@@ -61,18 +57,18 @@ public interface IClientDAO extends JpaRepository<ClientEntity, Long>, QuerydslP
 				}
 			}
 
-			ExpressionBuilder<?> builder = ExpressionBuilderFactory.getExpressionBuilder(filter);
+			ExpressionBuilder<?> builder = ExpressionBuilderFactory.getExpressionBuilder(filter, method);
 			// Aqui el resultado de la llmada es un objeto de tipo Expression o Expression[]
 			Object val = builder.build(filter);
 			BooleanExpression predicate = null;
 			switch (method.getParameterTypes().length) {
 			case 1:
-				predicate = (BooleanExpression) method.invoke(sp, val);
+				predicate = (BooleanExpression) method.invoke(fieldPath, val);
 				finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
 				break;
 			case 2:
 				Object[] values = (Object[]) val;
-				predicate = (BooleanExpression) method.invoke(sp, values[0], values[1]);
+				predicate = (BooleanExpression) method.invoke(fieldPath, values[0], values[1]);
 				finalPredicate = (finalPredicate == null) ? predicate : finalPredicate.and(predicate);
 				break;
 			}

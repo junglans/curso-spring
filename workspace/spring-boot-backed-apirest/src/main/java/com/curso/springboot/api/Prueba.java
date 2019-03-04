@@ -1,30 +1,18 @@
 package com.curso.springboot.api;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.curso.springboot.api.entity.QClientEntity;
 
 public class Prueba {
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args ) throws  Exception {
+		QClientEntity qclient = QClientEntity.clientEntity;
+		Field filterField = qclient.getClass().getField("name");
+		Object fieldPath = ((Object) filterField.get(qclient));
 		
-		Method[] methods = Expressions.class.getMethods();
-		
-		for (Method m: methods) {
-			
-			if ("in".equals(m.getName())) {
-				System.out.println(m);
-				Class<?>[] clazz = m.getParameterTypes();
-				if (clazz.length == 1) {
-					if (clazz[0].isAssignableFrom(Expression.class)) {
-						System.out.println("NO es lista");
-					} else if (clazz[0].isAssignableFrom(Expression[].class)) {
-						System.out.println("SI es lista");
-					}
-				}
-			}
-		}
+		 
+
 	}
 }
