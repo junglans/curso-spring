@@ -1,13 +1,19 @@
 package com.curso.springboot.api.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -46,10 +52,18 @@ public class ClientEntity implements Serializable {
 
 	@Column(name = "photo", insertable = true, updatable = true, nullable = true)
 	private String photo;
-
+	
+	@Column(name = "score", insertable = true, updatable = true, nullable = true)
+	private BigDecimal score;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+	private List<BankAccountEntity> bankAccounts;
+	
 	@PrePersist
 	public void prePersist() {
 		this.creationDate = new Date();
+		this.score = BigDecimal.ZERO;
 	}
 
 	public Long getId() {
@@ -108,6 +122,22 @@ public class ClientEntity implements Serializable {
 		this.photo = photo;
 	}
 
+	public BigDecimal getScore() {
+		return score;
+	}
+
+	public void setScore(BigDecimal score) {
+		this.score = score;
+	}
+
+	public List<BankAccountEntity> getBankAccounts() {
+		return bankAccounts;
+	}
+
+	public void setBankAccounts(List<BankAccountEntity> bankAccounts) {
+		this.bankAccounts = bankAccounts;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -117,6 +147,8 @@ public class ClientEntity implements Serializable {
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
+		result = prime * result + ((score == null) ? 0 : score.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
@@ -155,6 +187,16 @@ public class ClientEntity implements Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (photo == null) {
+			if (other.photo != null)
+				return false;
+		} else if (!photo.equals(other.photo))
+			return false;
+		if (score == null) {
+			if (other.score != null)
+				return false;
+		} else if (!score.equals(other.score))
+			return false;
 		if (surname == null) {
 			if (other.surname != null)
 				return false;
@@ -162,5 +204,8 @@ public class ClientEntity implements Serializable {
 			return false;
 		return true;
 	}
+
+
+
 
 }

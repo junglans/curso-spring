@@ -18,8 +18,8 @@ public class FilterBy {
 
 	}
 
-	public String getAttrName() {
-		return attrName;
+	public String[] getAttrName() {
+		return attrName.split("\\.");
 	}
 
 	public void setAttrName(String attrName) {
