@@ -1,13 +1,12 @@
 package com.curso.springboot.api.dao;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-
-public enum Order {
+public enum OrderType {
 	ASCENDING("ASC"), DESCENDING("DESC");
 	
 	private String order;
 	 
-    Order(String order) {
+    OrderType(String order) {
         this.order = order;
     }
 
@@ -15,5 +14,6 @@ public enum Order {
 	public String getOrder() {
 		return order;
 	}
-
+ 
+    
 }

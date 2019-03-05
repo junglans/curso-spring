@@ -25,6 +25,7 @@ public class ClientRestController extends BaseCRUDRestControler<ClientEntity> {
 	public ClientRestController(@Autowired IClientService service) {
 		super(service);
 	}
+	
 	@RequestMapping(value="/client/list", method=RequestMethod.GET)
 	public ResponseEntity<?> findAll() throws Exception {
 		return super.findAll();

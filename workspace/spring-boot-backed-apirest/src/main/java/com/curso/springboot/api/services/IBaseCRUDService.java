@@ -4,7 +4,7 @@ import java.util.List;
 import com.curso.springboot.api.dao.FilterBy;
 
 public interface IBaseCRUDService<E> {
-	List<E> findAll(FilterBy...filter) throws Exception;
+	List<E> findAll(FilterBy[] filter) throws Exception;
 	
 	List<E> findAll() throws Exception;
 

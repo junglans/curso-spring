@@ -9,9 +9,9 @@ public class SortBy implements Serializable {
 	 */
 	private static final long serialVersionUID = 8060625738774119272L;
 	private String attrName;
-	private Order order;
+	private OrderType order;
 
-	public SortBy(String attrName, Order order) {
+	public SortBy(String attrName, OrderType order) {
 		this.attrName = attrName;
 		this.order = order;
 	}
@@ -24,11 +24,11 @@ public class SortBy implements Serializable {
 		this.attrName = attrName;
 	}
 
-	public Order getOrder() {
+	public OrderType getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderType order) {
 		this.order = order;
 	}
 

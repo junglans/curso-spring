@@ -12,7 +12,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.curso.springboot.api.builders.ExpressionBuilder;
 import com.curso.springboot.api.builders.ExpressionBuilderFactory;
 import com.curso.springboot.api.utils.CollectionUtils;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
@@ -22,6 +24,34 @@ public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateEx
 
 	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters) throws Exception {
 
+		BooleanExpression finalPredicate = getFilterByPredicate(entityPathBase, filters);
+		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+	}
+
+	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters, SortBy[] sorts) throws Exception {
+		BooleanExpression finalPredicate = getFilterByPredicate(entityPathBase, filters);
+		
+		if (sorts != null && sorts.length != 0) {
+			OrderSpecifier<?>[] orderByExpressions = new OrderSpecifier<?>[sorts.length];
+			for (int ind = 0; ind < sorts.length; ind++) {
+				ComparableExpression<?> comparable = 
+						(ComparableExpression<?>) getFieldPath(new String[] { sorts[ind].getAttrName() }, entityPathBase);
+				if (sorts[ind].getOrder().equals(OrderType.ASCENDING)) {
+					orderByExpressions[ind] = comparable.asc();
+				} else {
+					orderByExpressions[ind] = comparable.desc();
+				}
+
+			}
+			return CollectionUtils.iterableToCollection(findAll(finalPredicate, orderByExpressions));
+		} else {
+			return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		}
+		
+	}
+
+	default BooleanExpression getFilterByPredicate(EntityPathBase<?> entityPathBase, FilterBy[] filters)
+			throws Exception {
 		BooleanExpression finalPredicate = null;
 		for (FilterBy filter : filters) {
 
@@ -47,18 +77,11 @@ public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateEx
 				break;
 			}
 		}
-
-		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		return finalPredicate;
 	}
 
-	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters, SortBy[] sorts) throws Exception {
-		return null;
-	}
-	
-	
-	
 	default Object getFieldPath(String[] attrName, EntityPathBase<?> entityPathBase) throws Exception {
-		
+
 		// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del
 		// campo que viene en el filtro.
 		// El nombre del campo puede ser una lista de nombres separada por ".".
@@ -70,10 +93,11 @@ public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateEx
 			if (fieldPath.getClass().isAssignableFrom(ListPath.class)) {
 
 				SimpleExpression<?> qentity = ((ListPath<?, ?>) fieldPath).any();
-				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length),(EntityPathBase<?>) qentity);
+				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length), (EntityPathBase<?>) qentity);
 
 			} else {
-				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length),(EntityPathBase<?>) fieldPath);
+				fieldPath = getFieldPath(Arrays.copyOfRange(attrName, 1, attrName.length),
+						(EntityPathBase<?>) fieldPath);
 			}
 		}
 		return fieldPath;

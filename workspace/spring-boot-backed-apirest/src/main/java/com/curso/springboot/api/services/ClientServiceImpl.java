@@ -42,7 +42,7 @@ public class ClientServiceImpl implements IClientService {
 
 	@Override
 	@Transactional(readOnly= true)
-	public List<ClientEntity> findAll(FilterBy...filter) throws Exception {
+	public List<ClientEntity> findAll(FilterBy[] filter) throws Exception {
 		return (List<ClientEntity>) clientDao.findAll(filter);
 	}
 
