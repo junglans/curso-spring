@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.curso.springboot.api.dao.FilterBy;
+import com.curso.springboot.api.dao.QueryRequest;
 import com.curso.springboot.api.entity.BankAccountEntity;
 import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.services.IClientService;
@@ -30,8 +30,8 @@ public class ClientRestController extends BaseCRUDRestControler<ClientEntity> {
 		return super.findAll();
 	}
 	@RequestMapping(value="/client/list", method=RequestMethod.POST)
-	public ResponseEntity<?> findAll(@RequestBody FilterBy...filter) throws Exception {
-		return super.findAll(filter);
+	public ResponseEntity<?> findAll(@RequestBody QueryRequest request) throws Exception {
+		return super.findAll(request);
 	}
 	
 	@RequestMapping(value="/client/{id}", method=RequestMethod.GET)

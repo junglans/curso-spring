@@ -8,7 +8,12 @@ import com.curso.springboot.api.entity.QClientEntity;
  
 @Repository
 public interface IClientDAO extends IBaseDAO<ClientEntity, Long> {
-	default List<ClientEntity> findAll(FilterBy... filters) throws Exception {
+	
+	default List<ClientEntity> findAll(FilterBy[] filters) throws Exception {
 		return findAll(QClientEntity.clientEntity, filters);
+	}
+	
+	default List<ClientEntity> findAll(FilterBy[] filters, SortBy[] sorts) throws Exception {
+		return findAll(QClientEntity.clientEntity, filters, sorts);
 	}
 }

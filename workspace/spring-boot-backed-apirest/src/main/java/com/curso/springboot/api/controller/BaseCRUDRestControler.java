@@ -8,7 +8,7 @@ import java.util.function.BiConsumer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.curso.springboot.api.dao.FilterBy;
+import com.curso.springboot.api.dao.QueryRequest;
 import com.curso.springboot.api.services.IBaseCRUDService;
 
 public abstract class BaseCRUDRestControler<E> {
@@ -23,8 +23,8 @@ public abstract class BaseCRUDRestControler<E> {
 		return new ResponseEntity<List<E>>(service.findAll(), HttpStatus.OK);
 	}
 	
-	public ResponseEntity<?> findAll(FilterBy...filter) throws Exception {
-		return new ResponseEntity<List<E>>(service.findAll(filter), HttpStatus.OK);
+	public ResponseEntity<?> findAll(QueryRequest request) throws Exception {
+		return new ResponseEntity<List<E>>(service.findAll(request.getFilters()), HttpStatus.OK);
 	}
 
 	public ResponseEntity<?> get(Long id) throws Exception {

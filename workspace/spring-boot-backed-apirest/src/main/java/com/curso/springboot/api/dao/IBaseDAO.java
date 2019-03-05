@@ -20,7 +20,7 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 @NoRepositoryBean
 public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateExecutor<T> {
 
-	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy... filters) throws Exception {
+	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters) throws Exception {
 
 		BooleanExpression finalPredicate = null;
 		for (FilterBy filter : filters) {
@@ -51,11 +51,17 @@ public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateEx
 		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
 	}
 
+	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters, SortBy[] sorts) throws Exception {
+		return null;
+	}
+	
+	
+	
 	default Object getFieldPath(String[] attrName, EntityPathBase<?> entityPathBase) throws Exception {
+		
 		// Utilizando reflexión recuperamos el campo de búsqueda a partir del nombre del
 		// campo que viene en el filtro.
 		// El nombre del campo puede ser una lista de nombres separada por ".".
-
 		// Buscamos el primer nivel
 		Field filterField = entityPathBase.getClass().getField(attrName[0]);
 

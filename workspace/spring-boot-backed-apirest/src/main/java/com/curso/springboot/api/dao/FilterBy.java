@@ -1,7 +1,13 @@
 package com.curso.springboot.api.dao;
 
-public class FilterBy {
+import java.io.Serializable;
 
+public class FilterBy implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5938100834361696166L;
 	private String attrName;
 	private String attrValue;
 	private String attrOperation;
