@@ -14,7 +14,7 @@ import com.curso.springboot.api.builders.ExpressionBuilderFactory;
 import com.curso.springboot.api.utils.CollectionUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
@@ -34,8 +34,8 @@ public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateEx
 		if (sorts != null && sorts.length != 0) {
 			OrderSpecifier<?>[] orderByExpressions = new OrderSpecifier<?>[sorts.length];
 			for (int ind = 0; ind < sorts.length; ind++) {
-				ComparableExpression<?> comparable = 
-						(ComparableExpression<?>) getFieldPath(new String[] { sorts[ind].getAttrName() }, entityPathBase);
+				ComparableExpressionBase<?> comparable = 
+						(ComparableExpressionBase<?>) getFieldPath(new String[] { sorts[ind].getAttrName() }, entityPathBase);
 				if (sorts[ind].getOrder().equals(OrderType.ASCENDING)) {
 					orderByExpressions[ind] = comparable.asc();
 				} else {

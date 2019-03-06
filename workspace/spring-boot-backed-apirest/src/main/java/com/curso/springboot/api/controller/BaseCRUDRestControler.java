@@ -29,7 +29,7 @@ public abstract class BaseCRUDRestControler<E> {
 	}
 	
 	public ResponseEntity<?> findAll(QueryRequest request) throws Exception {
-		return new ResponseEntity<List<E>>(service.findAll(request.getFilters()), HttpStatus.OK);
+		return new ResponseEntity<List<E>>(service.findAll(request.getFilters(), request.getSorts()), HttpStatus.OK);
 	}
 
 	public ResponseEntity<?> get(Long id) throws Exception {
