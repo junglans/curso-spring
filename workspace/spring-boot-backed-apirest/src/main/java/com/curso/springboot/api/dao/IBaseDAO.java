@@ -23,31 +23,50 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 public interface IBaseDAO<T, Q> extends JpaRepository<T, Q>, QuerydslPredicateExecutor<T> {
 
 	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters) throws Exception {
-
-		BooleanExpression finalPredicate = getFilterByPredicate(entityPathBase, filters);
-		return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		if (filters != null && filters.length != 0) {
+			BooleanExpression finalPredicate = getFilterByPredicate(entityPathBase, filters);
+			return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		} else {
+			return CollectionUtils.iterableToCollection(findAll());
+		}
 	}
 
 	default List<T> findAll(EntityPathBase<?> entityPathBase, FilterBy[] filters, SortBy[] sorts) throws Exception {
-		BooleanExpression finalPredicate = getFilterByPredicate(entityPathBase, filters);
-		
-		if (sorts != null && sorts.length != 0) {
-			OrderSpecifier<?>[] orderByExpressions = new OrderSpecifier<?>[sorts.length];
-			for (int ind = 0; ind < sorts.length; ind++) {
-				ComparableExpressionBase<?> comparable = 
-						(ComparableExpressionBase<?>) getFieldPath(new String[] { sorts[ind].getAttrName() }, entityPathBase);
-				if (sorts[ind].getOrder().equals(OrderType.ASCENDING)) {
-					orderByExpressions[ind] = comparable.asc();
-				} else {
-					orderByExpressions[ind] = comparable.desc();
-				}
 
-			}
-			return CollectionUtils.iterableToCollection(findAll(finalPredicate, orderByExpressions));
-		} else {
-			return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		BooleanExpression finalPredicate = null;
+		if (filters != null && filters.length != 0) {
+			finalPredicate = getFilterByPredicate(entityPathBase, filters);
 		}
-		
+		OrderSpecifier<?>[] orderByExpressions = null;
+		if (sorts != null && sorts.length != 0) {
+			orderByExpressions = getOrderByExpressions(entityPathBase, sorts);
+		}
+		if (finalPredicate != null && orderByExpressions != null) {
+			return CollectionUtils.iterableToCollection(findAll(finalPredicate, orderByExpressions));
+		} else if (finalPredicate != null && orderByExpressions == null) {
+			return CollectionUtils.iterableToCollection(findAll(finalPredicate));
+		} else if (finalPredicate == null && orderByExpressions != null) {
+			return CollectionUtils.iterableToCollection(findAll(orderByExpressions));
+		} else {
+			return CollectionUtils.iterableToCollection(findAll());
+		}
+
+	}
+
+	default OrderSpecifier<?>[] getOrderByExpressions(EntityPathBase<?> entityPathBase, SortBy[] sorts)
+			throws Exception {
+		OrderSpecifier<?>[] orderByExpressions = new OrderSpecifier<?>[sorts.length];
+		for (int ind = 0; ind < sorts.length; ind++) {
+			ComparableExpressionBase<?> comparable = (ComparableExpressionBase<?>) getFieldPath(
+					sorts[ind].getAttrName(), entityPathBase);
+			if (sorts[ind].getOrder().equals(OrderType.ASCENDING)) {
+				orderByExpressions[ind] = comparable.asc();
+			} else {
+				orderByExpressions[ind] = comparable.desc();
+			}
+
+		}
+		return orderByExpressions;
 	}
 
 	default BooleanExpression getFilterByPredicate(EntityPathBase<?> entityPathBase, FilterBy[] filters)

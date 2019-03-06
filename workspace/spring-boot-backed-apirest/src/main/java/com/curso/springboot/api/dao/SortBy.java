@@ -11,13 +11,12 @@ public class SortBy implements Serializable {
 	private String attrName;
 	private OrderType order;
 
-	public SortBy(String attrName, OrderType order) {
-		this.attrName = attrName;
-		this.order = order;
+	public SortBy() {
+		this.order = OrderType.ASCENDING;
 	}
 
-	public String getAttrName() {
-		return attrName;
+	public String[] getAttrName() {
+		return attrName.split("\\.");
 	}
 
 	public void setAttrName(String attrName) {

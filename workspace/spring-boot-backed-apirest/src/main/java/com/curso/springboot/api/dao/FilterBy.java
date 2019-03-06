@@ -14,15 +14,19 @@ public class FilterBy implements Serializable {
 	private String attrType;
 	private String attrFormat;
 
-	public FilterBy(String attrName, String attrValue, String attrOperation, String attrType, String attrFormat) {
-
-		this.attrName = attrName;
-		this.attrValue = attrValue;
-		this.attrOperation = attrOperation;
-		this.attrType = attrType;
-		this.attrFormat = attrFormat;
-
+	public FilterBy() {
+		this.attrType = "string";
+		this.attrOperation = "eq";
 	}
+//	public FilterBy(String attrName, String attrValue, String attrOperation, String attrType, String attrFormat) {
+//
+//		this.attrName = attrName;
+//		this.attrValue = attrValue;
+//		this.attrOperation = attrOperation;
+//		this.attrType = attrType;
+//		this.attrFormat = attrFormat;
+//
+//	}
 
 	public String[] getAttrName() {
 		return attrName.split("\\.");
