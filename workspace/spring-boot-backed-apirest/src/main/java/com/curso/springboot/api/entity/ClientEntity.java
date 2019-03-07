@@ -61,7 +61,7 @@ public class ClientEntity implements Serializable {
 	@JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
 	private List<BankAccountEntity> bankAccounts;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private CountryEntity country;
 	
 	@PrePersist

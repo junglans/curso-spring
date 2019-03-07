@@ -1,6 +1,7 @@
 package com.curso.springboot.api.controller;
 
 import java.util.List;
+
 import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.curso.springboot.api.dao.QueryRequest;
 import com.curso.springboot.api.entity.BankAccountEntity;
 import com.curso.springboot.api.entity.ClientEntity;
 import com.curso.springboot.api.services.IClientService;
+
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -53,10 +55,14 @@ public class ClientRestController extends BaseCRUDRestControler<ClientEntity> {
 		 		current.setName(client.getName());
 		 		current.setEmail(client.getEmail());
 		 		current.setSurname(client.getSurname());
-		 		current.setCountry(entity.getCountry());
+		 		current.setCountry(client.getCountry());
+		 		current.setActivationDate(client.getActivationDate());
+		 		current.setScore(client.getScore());
 		 		List<BankAccountEntity> accounts = current.getBankAccounts();
 		 		accounts.clear();
-		 		accounts.addAll(client.getBankAccounts());
+		 		if (client.getBankAccounts() != null) {
+		 			accounts.addAll(client.getBankAccounts());
+		 		}
 		 	};
 			return super.update(entity, id, fn);
 	 

@@ -7,12 +7,14 @@ import { HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class ClientService   {
 
-  private urlList:string = "http://localhost:8080/api/client";
-  private urlNew:string = "http://localhost:8080/api/client";
+  private urlListClient:string = "http://localhost:8080/api/client/list";
+  private urlClient:string = "http://localhost:8080/api/client";
+   
   constructor(private service: BaseService) {}
 
   public getAllClients(): Observable<Array<Client>> {
-    return this.service.executeRequest<Array<Client>>("GET", this.urlList);
+   
+    return this.service.executeRequest<Array<Client>>("GET", this.urlListClient);
     /*
     return this.http.request(new HttpRequest("GET", this.url)).pipe(
       map (  ( response : HttpResponse<Array<Client>> ) => {
@@ -36,6 +38,14 @@ export class ClientService   {
   }
 
   public create(client: Client): Observable<Client> {
-    return this.service.executeRequest<Client>("POST", this.urlNew, client, {headers: new HttpHeaders({'Content-Type':'application/json'})});
+    return this.service.executeRequest<Client>("POST", this.urlClient, client, {headers: new HttpHeaders({'Content-Type':'application/json'})});
+  }
+
+  public get(id: number): Observable<Client> {
+    return this.service.executeRequest<Client>("GET",`${this.urlClient}/${id}`);
+  }
+
+  public update(client: Client): Observable<Client> {
+    return this.service.executeRequest<Client>("PUT", `${this.urlClient}/${client.id}`, client, {headers: new HttpHeaders({'Content-Type':'application/json'})});
   }
 }
