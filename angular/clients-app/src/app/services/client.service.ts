@@ -48,4 +48,8 @@ export class ClientService   {
   public update(client: Client): Observable<Client> {
     return this.service.executeRequest<Client>("PUT", `${this.urlClient}/${client.id}`, client, {headers: new HttpHeaders({'Content-Type':'application/json'})});
   }
+
+  public delete(id: number): Observable<any> {
+     return this.service.executeRequest("DELETE", `${this.urlClient}/${id}`);
+  }
 }
