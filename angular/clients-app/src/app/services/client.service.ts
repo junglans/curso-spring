@@ -50,6 +50,6 @@ export class ClientService   {
   }
 
   public delete(id: number): Observable<any> {
-     return this.service.executeRequest("DELETE", `${this.urlClient}/${id}`);
+     return this.service.executeRequest<any>("DELETE", `${this.urlClient}/${id}`);
   }
 }

@@ -217,7 +217,9 @@ public class ClientEntity implements Serializable {
 		return true;
 	}
 
-
-
-
+	@Override
+	public String toString() {
+		return "ClientEntity [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + "]";
+	}
+ 
 }

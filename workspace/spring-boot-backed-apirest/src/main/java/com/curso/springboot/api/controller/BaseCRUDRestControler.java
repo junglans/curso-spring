@@ -1,8 +1,6 @@
 package com.curso.springboot.api.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.springframework.http.HttpStatus;
@@ -42,13 +40,10 @@ public abstract class BaseCRUDRestControler<E> {
 
 	public ResponseEntity<?> delete(Long id) throws Exception {
 
-		this.service.delete(this.service.findById(id));
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("mensaje", "Entidad eliminada correctamente.");
-		response.put("status", HttpStatus.NO_CONTENT);
-
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NO_CONTENT);
+		E entity = this.service.findById(id);
+		this.service.delete(entity);
+		return new ResponseEntity<E>(entity, HttpStatus.OK);
+		
 	}
 
 	public ResponseEntity<?> update(E entity, Long id, BiConsumer<E, E> fn) throws Exception {
