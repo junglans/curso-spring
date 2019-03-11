@@ -1,5 +1,8 @@
 package com.curso.springboot.reactor.app;
 
+ 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -22,6 +25,9 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		List<String> users = Arrays.asList(new String[] {"Andres Perez", "Bruce Banner", "Maria Casado", "Diego López", "Juan Jiménez", "Bruce Lee", "Bruce Willis"});
+		
 		Consumer<User> consumer = new Consumer<User> () {
 
 			@Override
@@ -29,10 +35,15 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 				System.out.println(item.getName());
 			}};
 		// Definimos el flujo...
-	    Flux<String> names = Flux.just("Andres", "Pedro", "Maria", "Diego", "Juan")
-	    		.map(item -> new User(item.toUpperCase(), null))
+	    //Flux<String> names = Flux.just("Andres Perez", "Bruce Banner", "Maria Casado", "Diego López", "Juan Jiménez", "Bruce Lee", "Bruce Willis");
+			
+		Flux<String> names = Flux.fromIterable(users).map(item -> { 
+	    			String [] data = item.split(" ");
+	    			return new User(data[0], data[1]);
+	    		   })
+	    		.filter(item -> "Bruce".equals(item.getName()))
 	    		.doOnNext(consumer)
-	    		.map(item -> item.getName().toLowerCase());
+	    		.map(item -> new User(item.getName().toUpperCase(), item.getSurname().toUpperCase()).toString());
 	    		 
 	    // En la suscripción se inicia el procesado
 	    names.subscribe(item -> logger.info("Item:" + item), 

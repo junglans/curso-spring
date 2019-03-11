@@ -24,5 +24,9 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", surname=" + surname + "]";
+	}
 	
 }
