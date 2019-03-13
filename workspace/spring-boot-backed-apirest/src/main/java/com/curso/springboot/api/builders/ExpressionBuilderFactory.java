@@ -1,12 +1,9 @@
 package com.curso.springboot.api.builders;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Properties;
 import java.util.function.Function;
 
 import org.apache.commons.text.CaseUtils;
-import org.springframework.core.io.FileSystemResource;
 
 import com.curso.springboot.api.dao.FilterBy;
 import com.querydsl.core.types.Expression;
@@ -14,14 +11,7 @@ import com.querydsl.core.types.dsl.Expressions;
 
 public class ExpressionBuilderFactory {
 
-	public static final Properties builderTypes = new Properties();
-	static {
-		try {
-			builderTypes.load(new FileSystemResource("src/main/resources/builder_types.properties").getInputStream());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	
 	/**
 	 * 
 	 * @param filter
@@ -39,6 +29,7 @@ public class ExpressionBuilderFactory {
 			}
 		}
 		switch(params.length) {
+		// En el caso de que el método necesite un único parámetro hay que comprobar si es un array.
 		case 1:
 			if (params[0].isAssignableFrom(Expression[].class)) {
 				return asArrayExpression(filter);
@@ -53,18 +44,25 @@ public class ExpressionBuilderFactory {
 		}
 		
 	}
+	/**
+	 * Se devuelve el ExpressionBuilder que construye una única expresión, se corresponde con las operadores lógicos unitarios: eq, ne, goe, gt, loe, lt, etc
+	 * @param filter
+	 * @return
+	 * @throws Exception
+	 */
 
 	private static ExpressionBuilder<Expression<?>> asExpression(FilterBy filter) throws Exception {
 		Function<FilterBy, Expression<?>> fn = (filterBy) -> {
 			try {
 
 				String methodName = "as" + CaseUtils.toCamelCase(filter.getAttrType(), true, null);
-				Class<?> clazz = Class.forName(builderTypes.getProperty(filter.getAttrType()));
-				Method expression = Expressions.class.getMethod(methodName, clazz);
-				Method type = TypesFactory.class.getMethod(methodName, String.class, String.class);
+				
+				Method typeMethod = TypesFactory.class.getMethod(methodName);
+				Method expressionMethod = Expressions.class.getMethod(methodName, (Class<?>)typeMethod.invoke(null, new Object[] {}));
+				Method valueMethod = ExpressionValuesFactory.class.getMethod(methodName, String.class, String.class);
 
-				return (Expression<?>) expression.invoke(null,
-						type.invoke(null, filterBy.getAttrValue().trim(), filterBy.getAttrFormat()));
+				return (Expression<?>) expressionMethod.invoke(null,
+						valueMethod.invoke(null, filterBy.getAttrValue().trim(), filterBy.getAttrFormat()));
 
 			} catch (Exception e) {
 				// TODO: hay que crear una excepción personalizada y relanzarla.
@@ -88,15 +86,15 @@ public class ExpressionBuilderFactory {
 			try {
 
 				String methodName = "as" + CaseUtils.toCamelCase(filter.getAttrType(), true, null);
-				Class<?> clazz = Class.forName(builderTypes.getProperty(filter.getAttrType()));
-				Method expression = Expressions.class.getMethod(methodName, clazz);
-				Method type = TypesFactory.class.getMethod(methodName, String.class, String.class);
+				Method typeMethod = TypesFactory.class.getMethod(methodName);
+				Method expressionMethod = Expressions.class.getMethod(methodName, (Class<?>)typeMethod.invoke(null, new Object[] {}));
+				Method valueMethod = ExpressionValuesFactory.class.getMethod(methodName, String.class, String.class);
 
 				String[] values = filter.getAttrValue().split(",");
 				Expression<?>[] expressions = new Expression<?>[values.length];
 				for (int i = 0; i<values.length; i++ ) {
-					expressions[i] = (Expression<?>) expression.invoke(null,
-							type.invoke(null, values[i].trim(), filterBy.getAttrFormat()));
+					expressions[i] = (Expression<?>) expressionMethod.invoke(null,
+							valueMethod.invoke(null, values[i].trim(), filterBy.getAttrFormat()));
 				}
 				return expressions;
 
@@ -122,19 +120,19 @@ public class ExpressionBuilderFactory {
 			try {
 
 				String methodName = "as" + CaseUtils.toCamelCase(filter.getAttrType(), true, null);
-				Class<?> clazz = Class.forName(builderTypes.getProperty(filter.getAttrType()));
-				Method expression = Expressions.class.getMethod(methodName, clazz);
-				Method type = TypesFactory.class.getMethod(methodName, String.class, String.class);
+				Method typeMethod = TypesFactory.class.getMethod(methodName);
+				Method expressionMethod = Expressions.class.getMethod(methodName, (Class<?>)typeMethod.invoke(null, new Object[] {}));
+				Method valueMethod = ExpressionValuesFactory.class.getMethod(methodName, String.class, String.class);
 				
 				String[] values = filter.getAttrValue().split(",");
 				if (values.length != 2) {
 					throw new Exception("Wrong number of values : " + values.length);
 				}
 				Expression<?>[] expressions = new Expression<?>[2];
-				expressions[0] =  (Expression<?>) expression.invoke(null,
-						type.invoke(null, values[0].trim(), filterBy.getAttrFormat()));
-				expressions[1] =  (Expression<?>) expression.invoke(null,
-						type.invoke(null, values[1].trim(), filterBy.getAttrFormat()));
+				expressions[0] =  (Expression<?>) expressionMethod.invoke(null,
+						valueMethod.invoke(null, values[0].trim(), filterBy.getAttrFormat()));
+				expressions[1] =  (Expression<?>) expressionMethod.invoke(null,
+						valueMethod.invoke(null, values[1].trim(), filterBy.getAttrFormat()));
 
 				return expressions;
 				
